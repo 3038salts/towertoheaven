@@ -1,0 +1,65 @@
+Name:
+    Tower to Heaven
+
+Description:
+    It's a game revolving around a tower. God selects the player, who takes the
+    form of a smiling watermelon with wings, for a one-time, special pathway to heaven
+    as a part of their special project. As the player ascends the tower while solving
+    problems along the way, God enacts more and more restrictions to test the player's
+    abilities, supposedly to determine if the player is qualified to become an angel. But the plot
+    twist is that God is testing the player to see if they can replace them in the end.
+    The player has many intrinsic, powerful abilities at first, like shooting magical orbs, 
+    fly, and the skill of shrinking and growing in size. The player can collect items and use them to solve
+    puzzles and such to ascend through the levels. There will be a timer and 3 lives.
+
+Similar projects:
+    Luigi's Mansion: This game is centered around a mansion where Luigi has certain tools 
+    he uses to get through the game until he eventually finds Mario. There are chests and 
+    enemies in the game, and I want to incorporate those weapons, items, and enemy type 
+    things in my game as well. I like how there are several rooms on each floor, and I 
+    would like to implement that. But I don't want to make 3D graphics, as that will make 
+    it more complicated than I would like to, and the end goal is different.
+
+    Tower of Heaven: I just recently saw this game, and I think my game will probably take the most inspiration 
+    from its design and development. This game is centered around a tower. The player enters 
+    the tower, and God creates a book of laws the player has to follow. I will implement 
+    something similar to that as well. I want to include colors, have a more flashy design, 
+    and code different levels that aren't hard-coded.
+
+    2D Mario: The game can be similar to this as there are enemies in a game and the map is 2D
+    like the game I plan to make. However, my enemies will be smarter and there will be different
+    puzzles too. I probably will make each floor progress from left to right like how Mario
+    does it for each level.
+
+Structural plan:
+    I will have classes for the player, items, puzzles, enemies, the tower, and the background.
+    The complex algorithms for each level will be placed into the tower class for
+    ease of use and organization. Thye puzzle's algorithm will be placed in its
+    own class so it's easy to manage. Assets will be stored in a separate folder from the
+    code to keep everything clean. I plan to have 3 floors which will be separated
+    from each other through spacing in code and possibly different files.
+
+Algorithmic plan:
+    For items in chests, I will implement a function that uses a list and a random number generator
+    with floor scaling to determine what the player will get. There will also be a function
+    that randomly generates the type of enemy, with each floor having a set
+    theme and difficulty. The obstacles will also be in randomly generated locations.
+    Since I want the view of the player to be a continuous scroll,
+    I will center the player in an invisible, bounded square so that if the player
+    moves out of it, the "camera" follows the player. The background will also be
+    animated to show how high the player has gotten in relation to "Earth". This will be implemented
+    in the background class wtih functions that track the height by looking at the
+    tower's floor values in a variable.
+
+Timeline plan:
+    I plan to implement the player by the end of Wednesday, most of the tower without enemies
+    by Friday, the tower portion by Saturday and the most complex algorithms by
+    the end of Sunday. Then, I will add in the classes for background and items by Tuesday. 
+
+Version control:
+    I have already made a private GitHub repository and will make it public after I'm finished
+    creating my term project. I have GitHub Desktop installed and will use it to periodically
+    back up my code.
+
+Module list:
+    None
