@@ -7,8 +7,8 @@ class Player:
         self.spriteImage = None
         self.spriteList = None
         self.spriteCount = 0
-        self.x = 200
-        self.y = 600
+        self.x = 150
+        self.y = 750
         self.jumping = False
     
     def getSprites(self, file): #this part is from ray's demos but we might not use this code
@@ -25,7 +25,7 @@ class Player:
         drawImage(sprite, self.x, self.y, width = spriteWidth // 7, height = spriteHeight // 7, align='center')
     
     def changeCoord(self, floor, mapX, mapY):
-        if self.floor == -1: #before entering tower
+        if floor == -1: #before entering tower
             self.x = mapX + 900
             self.y = mapY
     
@@ -42,5 +42,6 @@ class Player:
             if time.time() - elapsedTime > 1 / 60:
                 elapsedTime = (time.time() - startTime) * 60
         self.jumping = False
-        
-        
+
+    def load(self): #prob the same for each floor
+        pass
