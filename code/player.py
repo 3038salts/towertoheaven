@@ -1,15 +1,17 @@
 from cmu_graphics import *
 from PIL import Image
-import os, pathlib
+import os, pathlib, time
 
 class Player:
     def __init__(self):
         self.spriteImage = None
         self.spriteList = None
         self.spriteCount = 0
-        self.x = 0
+        self.x = 200
+        self.y = 600
+        self.jumping = False
     
-    def getSprites(self, file):
+    def getSprites(self, file): #this part is from ray's demos but we might not use this code
         self.spriteImage = Image.open(file)
         self.spriteList = []
         for i in range(2):
@@ -20,4 +22,25 @@ class Player:
     def drawPlayer(self):
         sprite = self.spriteList[self.spriteCount]
         spriteWidth, spriteHeight = getImageSize(sprite)
-        drawImage(sprite, 640, 400, width = spriteWidth // 7, height = spriteHeight // 7, align='center')
+        drawImage(sprite, self.x, self.y, width = spriteWidth // 7, height = spriteHeight // 7, align='center')
+    
+    def changeCoord(self, floor, mapX, mapY):
+        if self.floor == -1: #before entering tower
+            self.x = mapX + 900
+            self.y = mapY
+    
+    def jump(self): #doesn't work yet
+        self.jumping = True
+        startTime = time.time()
+        endTime = startTime + 1
+        elapsedTime = 0
+        startY = self.y
+        while elapsedTime <= (endTime - startTime) * 60:
+            print(elapsedTime)
+            temp = (-0.1 * elapsedTime ** 2) + (6 * elapsedTime) + startY
+            self.y = float(f'{temp:.2f}')
+            if time.time() - elapsedTime > 1 / 60:
+                elapsedTime = (time.time() - startTime) * 60
+        self.jumping = False
+        
+        
