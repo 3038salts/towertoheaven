@@ -8,6 +8,7 @@ class Player:
         self.spriteCount = 0
         self.x = 0
         self.y = 0
+        self.dy = 0
         self.width = 0
         self.height = 0
         self.jumping = False
@@ -17,6 +18,7 @@ class Player:
         self.spriteList = []
         for i in range(2):
             for j in range(3):
+                #temporary sprite
                 sprite = CMUImage(self.spriteImage.crop((132 + 1000 * j, 259 + 1200 * i, 1002 + 1000 * j, 1034 + 1200 * i)))
                 self.spriteList.append(sprite)
     
@@ -32,43 +34,57 @@ class Player:
         # if floor != -1: #after entering tower
         #     self.x = app.width // 2
         #     self.y = app.height // 2
-    
+
     def notColliding(self): #keeps player in tower and not inside other objects
         if app.skyscraper.floor == -1:
             if self.x - (self.width // 2) < 0: #left bound for screen
                 self.x = (self.width // 2)
             elif self.x + (self.width // 2) - app.dx > app.width: #right bound for screen
                 self.x = app.width - (self.width // 2)
+            for x, y in app.skyscraper.stairCoords:
+                if (self.x + (self.width // 2) + app.dx > x and self.x - (self.width // 2) - app.dx < x and
+                    self.y + (self.height // 2) > y and self.y - (self.height // 2) < y + app.skyscraper.stairHeight):
+                    #left side of stair
+                    self.x = x - self.width // 2
+                elif (self.x + (self.width // 2) + app.dx > x + app.skyscraper.stairWidth and
+                      self.x - (self.width // 2) - app.dx < x + app.skyscraper.stairWidth and
+                      self.y + (self.height // 2) > y and
+                      self.y - (self.height // 2) < y + app.skyscraper.stairHeight): #right side of stair
+                    #doesn't really apply because we can't get to the right side
+                    self.x = x + app.skyscraper.stairWidth + self.width // 2
+                # elif self.y + (self.height // 2) + app.dy >= y: #top side of stair
+                #     self.y = y - (self.height // 2)
+                # elif self.y - (self.height // 2) - app.dy <= y + app.skyscraper.stairHeight: #underside of stair
+                #     self.y = app.skyscraper.stairHeight
         else:
             #for the tower bounds
-            if app.skyscraper.modifiedx + app.dx > self.x - (self.width // 2): #left bound
-                app.mapx = self.x - (self.width // 2) - app.skyscraper.x - app.dx
-            elif app.skyscraper.modifiedx + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
-                app.mapx = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
+            if app.skyscraper.modifiedX + app.dx > self.x - (self.width // 2): #left bound
+                app.mapX = self.x - (self.width // 2) - app.skyscraper.x - app.dx
+            elif app.skyscraper.modifiedX + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
+                app.mapX = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
             for x, y in app.skyscraper.stepCoords: #for the steps
                 if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + app.skyscraper.stepWidth
-                and self.y + (self.height // 2) >= y - app.dy and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight + app.dy):
+                and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight):
                     return None
             return None
 
-    # def jump(self): #doesn't work yet
-    #     self.jumping = True
-    #     startTime = time.time()
-    #     endTime = startTime + 1
-    #     elapsedTime = 0
-    #     startY = self.y
-    #     while elapsedTime <= (endTime - startTime) * 60:
-    #         print(elapsedTime)
-    #         temp = (-0.1 * elapsedTime ** 2) + (6 * elapsedTime) + startY
-    #         self.y = float(f'{temp:.2f}') #cite if needed
-    #         if time.time() - elapsedTime > 1 / 60:
-    #             elapsedTime = (time.time() - startTime) * 60
-    #     self.jumping = False
+    def jump(self): #doesn't work yet
+        if app.skyscraper.floor == -1:
+            if self.y + (self.height // 2) > app.skyscraper.groundY:
+                self.dy = 0
+                self.y = app.skyscraper.groundY - (self.height // 2)
+                self.jumping = False
+            else:
+                #tweak gravitational acceleration
+                self.dy += 0.2
+                pass
+        elif app.skyscraper.floor >= 1:
+            pass
 
     def load(self): #prob the same for each floor
         if app.skyscraper.floor == -1:
             self.x = 150
-            self.y = 750
+            self.y = app.height - 110 // 2
         else: #after entering
             self.x = app.width // 2
             self.y = 500

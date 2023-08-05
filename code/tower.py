@@ -6,28 +6,29 @@ class Tower:
         self.totalFloors = 3
         self.x = 900
         self.y = 0
-        self.modifiedx = self.x
-        self.modifiedy = self.y
+        self.modifiedX = self.x
+        self.modifiedY = self.y
         self.towerWidth = 0
         self.towerHeight = 0
-        self.doorx = 0
-        self.doory = 0
+        self.doorX = 0
+        self.doorY = 0
         self.doorWidth = 0
         self.doorHeight = 0
         self.colors = [rgb(186, 205, 252), rgb(252, 200, 186), rgb(238, 252, 186),
                        rgb(205, 252, 186), rgb(252, 186, 205)]
+        self.groundY = app.height
     
     def drawTower(self):
         if self.floor == -1: #before entering tower
             #tower
             drawRect(self.x, self.y, self.towerWidth, self.towerHeight, fill = 'gray')
             #door
-            drawRect(self.doorx, self.doory, self.doorWidth, self.doorHeight, fill = 'brown')
+            drawRect(self.doorX, self.doorY, self.doorWidth, self.doorHeight, fill = 'brown')
             #stairs
             self.drawStartStairs()
         elif self.floor == 1: #in tower
             #tower in the back
-            drawRect(self.modifiedx, self.modifiedy, self.towerWidth, self.towerHeight, fill = 'gray')
+            drawRect(self.modifiedX, self.modifiedY, self.towerWidth, self.towerHeight, fill = 'gray')
             #wall pattern
             # self.drawBrickPattern()
             #jumping up steps
@@ -37,8 +38,8 @@ class Tower:
     # def drawBrickPattern(self): #this makes it lag too much
     #     brickHeight = self.towerHeight // 60
     #     brickWidth = self.towerWidth // 50
-    #     for row in range(self.modifiedx, self.modifiedx + self.towerWidth, brickWidth + 2):
-    #         for col in range(self.modifiedy, self.modifiedy + self.towerHeight, brickHeight + 2):
+    #     for row in range(self.modifiedX, self.modifiedX + self.towerWidth, brickWidth + 2):
+    #         for col in range(self.modifiedY, self.modifiedY + self.towerHeight, brickHeight + 2):
     #             drawRect(row, col, brickWidth, brickHeight, fill = rgb(244, 248, 184), border = 'black', borderWidth = 1)
 
     def drawSteps(self):
@@ -64,17 +65,17 @@ class Tower:
         self.stepCoords = copy.deepcopy(self.originalStepCoords)
 
     def drawStartStairs(self):
-        stairCoords = []
+        self.stairCoords = []
         # colors = self.loadStairColors()
         y = 720
-        height = 80
-        width = 150
-        startX = app.width - (width * 5) - 75
-        for x in range(startX, app.width - width, width):
-            stairCoords.append((x, y))
-            y -= height
-        for i in range(len(stairCoords)):
-            drawRect(stairCoords[i][0], stairCoords[i][1], width, height, fill = self.colors[i])
+        self.stairHeight = 80
+        self.stairWidth = 150
+        startX = app.width - (self.stairWidth * 5) - 75
+        for x in range(startX, app.width - self.stairWidth, self.stairWidth):
+            self.stairCoords.append((x, y))
+            y -= self.stairHeight
+        for i in range(len(self.stairCoords)):
+            drawRect(self.stairCoords[i][0], self.stairCoords[i][1], self.stairWidth, self.stairHeight, fill = self.colors[i])
 
     # def loadStairColors(self):
     #     colors = []
@@ -86,16 +87,16 @@ class Tower:
 
     def changeCoord(self):
         if self.floor != -1: #within tower
-            self.modifiedx = self.x + app.mapx
-            self.modifiedy = self.y + app.mapy
+            self.modifiedX = self.x + app.mapX
+            self.modifiedY = self.y + app.mapY
             for i in range(len(self.stepCoords)):
-                self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapx
-                self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapy
+                self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapX
+                self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapY
     
     #checks if center of player is within door
     def atDoor(self, playerx, playery):
-        if (self.floor == -1 and self.doorx <= playerx <= self.doorx + self.doorWidth
-            and self.doory <= playery <= self.doory + self.doorHeight):
+        if (self.floor == -1 and self.doorX <= playerx <= self.doorX + self.doorWidth
+            and self.doorY <= playery <= self.doorY + self.doorHeight):
             return True
         #add more cases for other floors
         return False
@@ -106,12 +107,12 @@ class Tower:
             self.towerWidth = app.width - 900
             self.towerHeight = app.height - 400
             #door
-            self.doorx = self.x + (self.towerWidth // 4)
-            self.doory = self.y + self.towerHeight // 2
+            self.doorX = self.x + (self.towerWidth // 4)
+            self.doorY = self.y + self.towerHeight // 2
             self.doorWidth = self.towerWidth // 2
             self.doorHeight = self.towerHeight // 2
         elif self.floor == 1:
-            self.x = self.modifiedx = 100
+            self.x = self.modifiedX = 100
             self.y = self.modified = -2 * app.height
             self.towerWidth = app.width * 4
             self.towerHeight = app.height * 4

@@ -10,10 +10,10 @@ def onAppStart(app):
     app.setMaxShapeCount(10000)
     #-----------#
     #to set the coordinates of everything except the player
-    app.mapx = 0
-    app.mapy = 0
+    app.mapX = 0
+    app.mapY = 0
     app.dx = 6
-    app.dy = 6
+    app.dy = 50
     #doesn't include player coordinates
     # app.listOfCoords = []
     #-----------#
@@ -38,11 +38,10 @@ def redrawAll(app):
         # app.skyscraper.drawLoadingScreen()
 
 def onStep(app):
-    pass
+    if app.skyscraper.floor == -1:
+        app.character.y += app.character.dy
+        app.character.jump()
     # app.stepsOccurred += 1
-    # app.skyscraper.changeCoord(app.mapx, app.mapy)
-    # app.character.changeCoord(app.skyscraper.floor)
-    # app.character.y.changeCoord(app.skyscraper.floor,)
 
 def onKeyHold(app, keys):
     app.character.notColliding()
@@ -55,31 +54,27 @@ def onKeyHold(app, keys):
             app.character.notColliding()
     elif app.skyscraper.floor >= 1:
         if 'd' in keys and 'a' not in keys:
-            app.mapx -= app.dx
+            app.mapX -= app.dx
             app.skyscraper.changeCoord()
         elif 'a' in keys and 'd' not in keys:
-            app.mapx += app.dx
+            app.mapX += app.dx
             app.skyscraper.changeCoord()
-    # elif app.skyscraper.floor >= 1 and app.character.notColliding() == False:
-    #     if 'd' in keys and 'a' not in keys:
-    #         app.mapx += app.dx * 10
-    #         app.skyscraper.changeCoord()
-    #     elif 'a' in keys and 'd' not in keys:
-    #         app.mapx -= app.dx * 10
-    #         app.skyscraper.changeCoord()
 
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
     if key == 'w' and app.skyscraper.floor == -1 and app.character.jumping == False:
+        app.character.dy = -10
         # app.character.jump()
+        app.character.jumping = True
         # start = app.stepsOccurred
-        app.character.y -= 90
+        # app.character.y -= 90
         # while app.stepsOccurred - start < 60:
         #     if app.stepsOccurred - start > 60:d
         #         app.character.y += 100
-    elif key == 's' and app.skyscraper.floor == -1 and app.character.jumping == False:
+    elif key == 's' and app.skyscraper.floor == -1:
         #this movement should be temporary and be replaced with "s" being used for entering door
-        app.character.y += 90
+        # app.character.y += 90
+        pass
     elif key == 'h' and app.skyscraper.floor < 3 and app.skyscraper.atDoor(app.character.x, app.character.y): #temporary for entering door
         app.skyscraper.floor = 1
         app.skyscraper.loadNextFloor()
