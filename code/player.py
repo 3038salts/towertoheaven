@@ -34,9 +34,12 @@ class Player:
         #     self.y = app.height // 2
     
     def notColliding(self): #keeps player in tower and not inside other objects
-       if app.skyscraper.floor == -1:
-           pass
-       else:
+        if app.skyscraper.floor == -1:
+            if self.x - (self.width // 2) < 0: #left bound for screen
+                self.x = (self.width // 2)
+            elif self.x + (self.width // 2) - app.dx > app.width: #right bound for screen
+                self.x = app.width - (self.width // 2)
+        else:
             #for the tower bounds
             if app.skyscraper.modifiedx + app.dx > self.x - (self.width // 2): #left bound
                 app.mapx = self.x - (self.width // 2) - app.skyscraper.x - app.dx
@@ -47,7 +50,7 @@ class Player:
                 and self.y + (self.height // 2) >= y - app.dy and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight + app.dy):
                     return None
             return None
-        
+
     # def jump(self): #doesn't work yet
     #     self.jumping = True
     #     startTime = time.time()

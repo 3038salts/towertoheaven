@@ -45,19 +45,20 @@ def onStep(app):
     # app.character.y.changeCoord(app.skyscraper.floor,)
 
 def onKeyHold(app, keys):
+    app.character.notColliding()
     if app.skyscraper.floor == -1: #and app.character.notColliding():
         if 'd' in keys and 'a' not in keys:
             app.character.x += 8
+            app.character.notColliding()
         elif 'a' in keys and 'd' not in keys:
             app.character.x -= 8
+            app.character.notColliding()
     elif app.skyscraper.floor >= 1:
         if 'd' in keys and 'a' not in keys:
             app.mapx -= app.dx
-            app.character.notColliding()
             app.skyscraper.changeCoord()
         elif 'a' in keys and 'd' not in keys:
             app.mapx += app.dx
-            app.character.notColliding()
             app.skyscraper.changeCoord()
     # elif app.skyscraper.floor >= 1 and app.character.notColliding() == False:
     #     if 'd' in keys and 'a' not in keys:
