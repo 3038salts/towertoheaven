@@ -63,7 +63,7 @@ def onKeyHold(app, keys):
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
     if key == 'w' and app.skyscraper.floor == -1 and app.character.jumping == False:
-        app.character.dy = -10
+        app.character.dy = -9.8
         # app.character.jump()
         app.character.jumping = True
         # start = app.stepsOccurred
@@ -81,6 +81,8 @@ def onKeyPress(app, key):
         # app.loading = True
         app.character.load()
         # app.loading = False
+    elif key == 'y':
+        app.skyscraper.floor = 1
     else:
         pass
     

@@ -41,7 +41,7 @@ class Player:
                 self.x = (self.width // 2)
             elif self.x + (self.width // 2) - app.dx > app.width: #right bound for screen
                 self.x = app.width - (self.width // 2)
-            for x, y in app.skyscraper.stairCoords:
+            for x, y in app.skyscraper.stairCoords: #change to be app.listOfCoords later
                 if (self.x + (self.width // 2) + app.dx > x and self.x - (self.width // 2) - app.dx < x and
                     self.y + (self.height // 2) > y and self.y - (self.height // 2) < y + app.skyscraper.stairHeight):
                     #left side of stair
@@ -49,11 +49,13 @@ class Player:
                 elif (self.x + (self.width // 2) + app.dx > x + app.skyscraper.stairWidth and
                       self.x - (self.width // 2) - app.dx < x + app.skyscraper.stairWidth and
                       self.y + (self.height // 2) > y and
-                      self.y - (self.height // 2) < y + app.skyscraper.stairHeight): #right side of stair
+                      self.y - (self.height // 2) < y + app.skyscraper.stairHeight):
+                    #right side of stair
                     #doesn't really apply because we can't get to the right side
                     self.x = x + app.skyscraper.stairWidth + self.width // 2
-                # elif self.y + (self.height // 2) + app.dy >= y: #top side of stair
-                #     self.y = y - (self.height // 2)
+                elif (self.y + (self.height // 2) + app.dy > y and self.y - (self.height // 2) + app.dy < y + app.skyscraper.stairHeight
+                      and self.x + (self.width // 2) > x and self.x - (self.width // 2) < x + app.skyscraper.stairWidth): #top side of stair
+                    self.y = y - (self.height // 2)
                 # elif self.y - (self.height // 2) - app.dy <= y + app.skyscraper.stairHeight: #underside of stair
                 #     self.y = app.skyscraper.stairHeight
         else:
@@ -68,7 +70,7 @@ class Player:
                     return None
             return None
 
-    def jump(self): #doesn't work yet
+    def jump(self): #need to fix collision
         if app.skyscraper.floor == -1:
             if self.y + (self.height // 2) > app.skyscraper.groundY:
                 self.dy = 0
@@ -77,7 +79,6 @@ class Player:
             else:
                 #tweak gravitational acceleration
                 self.dy += 0.2
-                pass
         elif app.skyscraper.floor >= 1:
             pass
 
