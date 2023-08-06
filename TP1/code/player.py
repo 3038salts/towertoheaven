@@ -9,6 +9,7 @@ class Player:
         self.x = 0
         self.y = 0
         self.dy = 0
+        self.d2y = 0.2
         self.width = 0
         self.height = 0
         self.jumping = False
@@ -53,22 +54,22 @@ class Player:
                     #right side of stair
                     #doesn't really apply because we can't get to the right side
                     self.x = x + app.skyscraper.stairWidth + self.width // 2
-                elif (self.y + (self.height // 2) + app.dy > y and self.y - (self.height // 2) + app.dy < y + app.skyscraper.stairHeight
+                elif (self.y + (self.height // 2) > y and self.y - (self.height // 2) < y + app.skyscraper.stairHeight
                       and self.x + (self.width // 2) > x and self.x - (self.width // 2) < x + app.skyscraper.stairWidth): #top side of stair
                     self.y = y - (self.height // 2)
                 # elif self.y - (self.height // 2) - app.dy <= y + app.skyscraper.stairHeight: #underside of stair
                 #     self.y = app.skyscraper.stairHeight
-        else:
-            #for the tower bounds
-            if app.skyscraper.modifiedX + app.dx > self.x - (self.width // 2): #left bound
-                app.mapX = self.x - (self.width // 2) - app.skyscraper.x - app.dx
-            elif app.skyscraper.modifiedX + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
-                app.mapX = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
-            for x, y in app.skyscraper.stepCoords: #for the steps
-                if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + app.skyscraper.stepWidth
-                and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight):
-                    return None
-            return None
+        # else:
+        #     #for the tower bounds
+        #     if app.skyscraper.modifiedX + app.dx > self.x - (self.width // 2): #left bound
+        #         app.mapX = self.x - (self.width // 2) - app.skyscraper.x - app.dx
+        #     elif app.skyscraper.modifiedX + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
+        #         app.mapX = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
+        #     for x, y in app.skyscraper.stepCoords: #for the steps
+        #         if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + app.skyscraper.stepWidth
+        #         and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight):
+        #             return None
+            return True
 
     def jump(self): #need to fix collision
         if app.skyscraper.floor == -1:
@@ -78,7 +79,7 @@ class Player:
                 self.jumping = False
             else:
                 #tweak gravitational acceleration
-                self.dy += 0.2
+                self.dy += self.d2y
         elif app.skyscraper.floor >= 1:
             pass
 
