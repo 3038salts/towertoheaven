@@ -7,12 +7,12 @@ def onAppStart(app):
     app.width = 1200
     app.height = 800
     app.stepsPerSecond = 60
-    app.setMaxShapeCount(10000)
+    # app.setMaxShapeCount(10)
     #-----------#
     #to set the coordinates of everything except the player
     app.mapX = 0
     app.mapY = 0
-    app.dx = 6
+    app.dx = 8
     app.dy = 50
     #doesn't include player coordinates
     app.coordsOfObjectsFloorNeg1 = []
@@ -21,8 +21,7 @@ def onAppStart(app):
     #initialize class veriables
     #app.stepsOccurred = 0
     app.skyscraper = tower.Tower()
-    app.skyscraper.loadNextFloor()
-    app.skyscraper.loadStepCoords()
+    app.skyscraper.loadFloor()
     app.character = player.Player()
     app.character.getSprites('../assets/player.jpg')
     app.character.spriteCount = 0
@@ -91,12 +90,10 @@ def onKeyPress(app, key):
     elif (key == 'h' and app.skyscraper.floor < 3 and
           app.skyscraper.atDoor(app.character.x, app.character.y)): #temporary for entering door
         app.skyscraper.floor = 1
-        app.skyscraper.loadNextFloor()
+        app.skyscraper.loadFloor()
         # app.loading = True
         app.character.load()
         # app.loading = False
-    elif key == 'y':
-        app.skyscraper.floor = 1
     else:
         pass
     

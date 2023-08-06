@@ -8,7 +8,7 @@ class Player:
         self.spriteCount = 0
         self.x = 0
         self.y = 0
-        self.dx = 7
+        self.dx = 8
         self.dy = 0
         self.d2y = 0.2
         self.width = 0
@@ -30,12 +30,6 @@ class Player:
         self.width = spriteWidth // 7
         self.height = spriteHeight // 7
         drawImage(sprite, self.x, self.y, width = self.width, height = self.height, align='center')
-    
-    def changeCoord(self, floor):
-        pass
-        # if floor != -1: #after entering tower
-        #     self.x = app.width // 2
-        #     self.y = app.height // 2
 
     def colliding(self): #keeps player in tower and not inside other objects
         if app.skyscraper.floor == -1:
@@ -49,6 +43,7 @@ class Player:
                     self.x - (self.width // 2) < x + width and #player left over right
                     rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
                     rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
+                    # print(rounded(self.y + (self.height // 2) + self.dy), y)
                     return True
             return False
         elif app.skyscraper.floor >= 1: #for the tower bounds
@@ -58,12 +53,19 @@ class Player:
             elif app.skyscraper.modifiedX + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
                 # app.mapX = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
                 return True
-            for x, y in app.skyscraper.stepCoords: #for the steps
-                if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + app.skyscraper.stepWidth
-                and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + app.skyscraper.stepHeight):
-                    return None
+            for x, y, width, height in app.coordsOfObjectsFloor1: #collision checking
+                # if (self.x + (self.width // 2) > x and #player right over left
+                #     self.x - (self.width // 2) < x + width and #player left over right
+                #     rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
+                #     rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
+                #     return True
+                # if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + width
+                # and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + height):
+                #     return True
+                pass
+            return False
 
-    def jump(self): #need to fix collision
+    def jump(self): #enables jump with gravity
         if app.skyscraper.floor == -1:
             if self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player on surface
                 self.dy = 0
@@ -74,7 +76,6 @@ class Player:
                     while self.colliding():
                         self.y += self.dy
                     self.dy = 0
-                    # self.d2y = 0
                 self.jumping = False
             else: #player in the air
                 #tweak gravitational acceleration
