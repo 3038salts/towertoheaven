@@ -47,9 +47,8 @@ class Player:
                 x, y, width, height = coord[0], coord[1], coord[2], coord[3]
                 if (self.x + (self.width // 2) > x and #player right over left
                     self.x - (self.width // 2) < x + width and #player left over right
-                    rounded(self.y - (self.height // 2) - self.dy) <= y + height and #player top over bottom
-                    rounded(self.y + (self.height // 2)) + self.dy) >= y: #player bottom over top
-                    print("delight", self.y + (self.height // 2) + self.dy, y)
+                    rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
+                    rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
                     return True
         # elif app.skyscraper.floor >= 1:
         #     pass
@@ -90,7 +89,7 @@ class Player:
 
     def jump(self): #need to fix collision
         if app.skyscraper.floor == -1:
-            if  self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player on surface
+            if self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player on surface
                 self.dy = 0
                 if self.y + (self.height // 2) > app.skyscraper.groundY:
                     self.y = app.skyscraper.groundY - (self.height // 2)
@@ -104,6 +103,8 @@ class Player:
             else: #player in the air
                 #tweak gravitational acceleration
                 self.dy += self.d2y
+                if self.colliding():
+                    self.dy -= self.d2y
         elif app.skyscraper.floor >= 1:
             pass
 
