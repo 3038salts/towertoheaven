@@ -52,7 +52,7 @@ class Tower:
         #         colors.append(newColor)
         for i in range(len(self.stepCoords)):
             drawRect(self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight, fill = self.colors[i])
-            app.coordsOfObjectsFloor1.append([self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight])
+            # app.coordsOfObjectsFloor1.append([self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight])
 
     def loadStepCoords(self):
         self.originalStepCoords = []
@@ -94,6 +94,8 @@ class Tower:
             for i in range(len(self.stepCoords)):
                 self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapX
                 self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapY
+            app.coordsOfObjectsFloor1 = []
+            app.coordsOfObjectsFloor1.extend(self.stepCoords)
     
     #checks if center of player is within door
     def atDoor(self, playerx, playery):

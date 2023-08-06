@@ -62,14 +62,20 @@ def onKeyHold(app, keys):
         if 'd' in keys and 'a' not in keys:
             app.mapX -= app.dx
             app.skyscraper.changeCoord()
+            if app.character.colliding():
+                app.mapX += app.dx
+                # app.skyscraper.changeCoord()
         elif 'a' in keys and 'd' not in keys:
             app.mapX += app.dx
             app.skyscraper.changeCoord()
+            if app.character.colliding():
+                app.mapX -= app.dx
+                # app.skyscraper.changeCoord()
 
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
     if key == 'w' and app.character.jumping == False:
-        app.character.dy = -9.8
+        app.character.dy = -10
         app.character.jumping = True
         if app.character.colliding():
             app.character.dy = 0
@@ -82,7 +88,8 @@ def onKeyPress(app, key):
         #this movement should be temporary and be replaced with "s" being used for entering door
         # app.character.y += 90
         pass
-    elif key == 'h' and app.skyscraper.floor < 3 and app.skyscraper.atDoor(app.character.x, app.character.y): #temporary for entering door
+    elif (key == 'h' and app.skyscraper.floor < 3 and
+          app.skyscraper.atDoor(app.character.x, app.character.y)): #temporary for entering door
         app.skyscraper.floor = 1
         app.skyscraper.loadNextFloor()
         # app.loading = True
