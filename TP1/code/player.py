@@ -8,7 +8,7 @@ class Player:
         self.spriteCount = 0
         self.x = 0
         self.y = 0
-        self.dx = 8
+        self.dx = 7
         self.dy = 0
         self.d2y = 0.2
         self.width = 0
@@ -50,11 +50,9 @@ class Player:
                     rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
                     rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
                     return True
-        # elif app.skyscraper.floor >= 1:
-        #     pass
-            else:
-                print("false")
-                return False
+            return False
+        elif app.skyscraper.floor >= 1:
+            pass
 
 
 

@@ -50,12 +50,12 @@ def onKeyHold(app, keys):
     if app.skyscraper.floor == -1: #and app.character.colliding():
         if 'd' in keys and 'a' not in keys:
             app.character.x += app.character.dx
-            if app.character.colliding():
-                app.character.x -= app.character.dx
+            while app.character.colliding():
+                app.character.x -= 1
         elif 'a' in keys and 'd' not in keys:
             app.character.dx = -app.character.dx
             app.character.x += app.character.dx
-            if app.character.colliding():
+            while app.character.colliding():
                 app.character.x -= app.character.dx
             app.character.dx = -app.character.dx
     elif app.skyscraper.floor >= 1:
