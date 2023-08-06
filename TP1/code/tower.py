@@ -42,8 +42,8 @@ class Tower:
             drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor1[i][1], width, height, fill = rgb(193, 170, 207))
 
     def loadGround(self):
-        x, y, width, height = 200, 555, 800, 245
-        self.originalGroundCoords = [x, y, width, height]
+        x, self.groundY, width, height = 200, 560, 1000, 245
+        self.originalGroundCoords = [x, self.groundY, width, height]
         app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
 
     # def drawBrickPattern(self): #this makes it lag too much

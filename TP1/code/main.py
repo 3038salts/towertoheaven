@@ -1,5 +1,5 @@
 from cmu_graphics import *
-import random, tower, player
+import tower, player
 
 def onAppStart(app):
     #----------------#
@@ -13,13 +13,12 @@ def onAppStart(app):
     app.mapX = 0
     app.mapY = 0
     app.dx = 8
-    app.dy = 50
+    app.dy = 0
     #doesn't include player coordinates
     app.coordsOfObjectsFloorNeg1 = []
     app.coordsOfObjectsFloor1 = []
     #-----------#
     #initialize class veriables
-    #app.stepsOccurred = 0
     app.skyscraper = tower.Tower()
     app.skyscraper.loadFloor()
     app.character = player.Player()
@@ -41,8 +40,9 @@ def onStep(app):
     if app.skyscraper.floor == -1:
         app.character.y += app.character.dy
         app.character.jump()
-        # app.character.colliding()
-    # app.stepsOccurred += 1
+    elif app.skyscraper.floor >= 1:
+        app.mapY += app.dy
+        app.character.jump()
 
 def onKeyHold(app, keys):
     # app.character.colliding()
@@ -61,28 +61,27 @@ def onKeyHold(app, keys):
         if 'd' in keys and 'a' not in keys:
             app.mapX -= app.dx
             app.skyscraper.changeCoord()
-            if app.character.colliding():
-                app.mapX += app.dx
-                # app.skyscraper.changeCoord()
+            # while app.character.colliding():
+            #     app.mapX += 1
+            #     app.skyscraper.changeCoord()
         elif 'a' in keys and 'd' not in keys:
             app.mapX += app.dx
             app.skyscraper.changeCoord()
-            if app.character.colliding():
-                app.mapX -= app.dx
-                # app.skyscraper.changeCoord()
+            # while app.character.colliding():
+            #     app.mapX -= 1
+            #     app.skyscraper.changeCoord()
 
 def onKeyPress(app, key):
-    #for floor 0, we need to prevent crossing over
-    if key == 'w' and app.character.jumping == False:
+    if key == 'w' and app.character.jumping == False and app.skyscraper.floor == -1:
         app.character.dy = -10
         app.character.jumping = True
         if app.character.colliding():
             app.character.dy = 0
-        # start = app.stepsOccurred
-        # app.character.y -= 90
-        # while app.stepsOccurred - start < 60:
-        #     if app.stepsOccurred - start > 60:d
-        #         app.character.y += 100
+    elif key == 'w' and app.character.jumping == False and app.skyscraper.floor >= 1:
+        app.dy = 10
+        app.character.jumping = True
+        if app.character.colliding():
+            app.dy = 0
     if key == 's' and app.skyscraper.floor == -1:
         #this movement should be temporary and be replaced with "s" being used for entering door
         # app.character.y += 90
@@ -90,9 +89,9 @@ def onKeyPress(app, key):
     elif (key == 'h' and app.skyscraper.floor < 3 and
           app.skyscraper.atDoor(app.character.x, app.character.y)): #temporary for entering door
         app.skyscraper.floor = 1
+        app.character.load()
         app.skyscraper.loadFloor()
         # app.loading = True
-        app.character.load()
         # app.loading = False
     else:
         pass

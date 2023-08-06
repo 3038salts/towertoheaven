@@ -42,7 +42,7 @@ class Player:
                 if (self.x + (self.width // 2) > x and #player right over left
                     self.x - (self.width // 2) < x + width and #player left over right
                     rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
-                    rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
+                    rounded(self.y + (self.height // 2) + self.dy) > y): #player bottom over top
                     # print(rounded(self.y + (self.height // 2) + self.dy), y)
                     return True
             return False
@@ -53,21 +53,24 @@ class Player:
             elif app.skyscraper.modifiedX + app.skyscraper.towerWidth - app.dx < self.x + (self.width // 2): #right bound
                 # app.mapX = self.x + (self.width // 2) - app.skyscraper.towerWidth - app.skyscraper.x + app.dx
                 return True
-            for x, y, width, height in app.coordsOfObjectsFloor1: #collision checking
-                # if (self.x + (self.width // 2) > x and #player right over left
-                #     self.x - (self.width // 2) < x + width and #player left over right
-                #     rounded(self.y - (self.height // 2) - self.dy) < y + height and #player top over bottom
-                #     rounded(self.y + (self.height // 2)) + self.dy) > y: #player bottom over top
-                #     return True
+            for coord in app.coordsOfObjectsFloor1: #collision checking
+                x, y, width, height = coord[0], coord[1], coord[2], coord[3]
+                if (self.x + (self.width // 2) > x and #player right over left
+                    self.x - (self.width // 2) < x + width and #player left over right
+                    rounded(self.y - (self.height // 2) - app.dy) < y + height and #player top over bottom
+                    rounded(self.y + (self.height // 2) + app.dy) > y): #player bottom over top
+                    print(self.x, self.y, x, y, width, height)
+                    print(app.coordsOfObjectsFloor1)
+                    app.mapX -= app.dx
+                    return True
                 # if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + width
                 # and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + height):
                 #     return True
-                pass
             return False
 
     def jump(self): #enables jump with gravity
         if app.skyscraper.floor == -1:
-            if self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player on surface
+            if self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player hitting surface
                 self.dy = 0
                 if self.y + (self.height // 2) > app.skyscraper.groundY:
                     self.y = app.skyscraper.groundY - (self.height // 2)
@@ -78,12 +81,28 @@ class Player:
                     self.dy = 0
                 self.jumping = False
             else: #player in the air
-                #tweak gravitational acceleration
                 self.dy += self.d2y
                 if self.colliding():
                     self.dy -= self.d2y
         elif app.skyscraper.floor >= 1:
-            pass
+            if self.colliding() or self.y + (self.height // 2) > app.skyscraper.groundY: #player hitting surface
+                app.dy = 0
+                # print("heights", self.y + (self.height // 2), app.skyscraper.groundY)
+                if self.y + (self.height // 2) > app.skyscraper.groundY:
+                    self.y = app.skyscraper.groundY - (self.height // 2)
+                    # print(self.y, app.skyscraper.groundY)
+                elif self.colliding():
+                    # app.dy = 1
+                    # while self.colliding():
+                    #     print("frozen")
+                    #     app.mapY += 100
+                    app.dy = 0
+                self.jumping = False
+            else: #player in the air
+                # print(self.y, app.skyscraper.groundY)
+                app.dy -= 0.01
+                if self.colliding():
+                    app.dy += 1
 
     def load(self): #prob the same for each floor
         if app.skyscraper.floor == -1:
