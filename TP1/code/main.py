@@ -15,7 +15,8 @@ def onAppStart(app):
     app.dx = 6
     app.dy = 50
     #doesn't include player coordinates
-    # app.listOfCoords = []
+    app.coordsOfObjectsFloorNeg1 = []
+    app.coordsOfObjectsFloor1 = []
     #-----------#
     #initialize class veriables
     #app.stepsOccurred = 0
@@ -41,22 +42,22 @@ def onStep(app):
     if app.skyscraper.floor == -1:
         app.character.y += app.character.dy
         app.character.jump()
-        # app.character.notColliding()
+        # app.character.colliding()
     # app.stepsOccurred += 1
 
 def onKeyHold(app, keys):
-    app.character.notColliding()
-    if app.skyscraper.floor == -1: #and app.character.notColliding():
+    # app.character.colliding()
+    if app.skyscraper.floor == -1: #and app.character.colliding():
         if 'd' in keys and 'a' not in keys:
-            app.character.x += 8
-            app.character.notColliding()
+            app.character.x += app.character.dx
+            if app.character.colliding():
+                app.character.x -= app.character.dx
         elif 'a' in keys and 'd' not in keys:
-            app.character.x -= 8
-            app.character.notColliding()
-        elif 'w' in keys and app.character.jumping == False:
-            app.character.dy = -9.8
-            app.character.jumping = True
-            app.character.notColliding()
+            app.character.dx = -app.character.dx
+            app.character.x += app.character.dx
+            if app.character.colliding():
+                app.character.x -= app.character.dx
+            app.character.dx = -app.character.dx
     elif app.skyscraper.floor >= 1:
         if 'd' in keys and 'a' not in keys:
             app.mapX -= app.dx
@@ -67,10 +68,11 @@ def onKeyHold(app, keys):
 
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
-    # if key == 'w' and app.skyscraper.floor == -1 and app.character.jumping == False:
-    #     app.character.dy = -9.8
-    #     app.character.jumping = True
-    #     app.character.notColliding()
+    if key == 'w' and app.character.jumping == False:
+        app.character.dy = -9.8
+        app.character.jumping = True
+        if app.character.colliding():
+            app.character.dy = 0
         # start = app.stepsOccurred
         # app.character.y -= 90
         # while app.stepsOccurred - start < 60:

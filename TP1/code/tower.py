@@ -52,6 +52,7 @@ class Tower:
         #         colors.append(newColor)
         for i in range(len(self.stepCoords)):
             drawRect(self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight, fill = self.colors[i])
+            app.coordsOfObjectsFloor1.append([self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight])
 
     def loadStepCoords(self):
         self.originalStepCoords = []
@@ -73,6 +74,7 @@ class Tower:
         startX = app.width - (self.stairWidth * 5) - 75
         for x in range(startX, app.width - self.stairWidth, self.stairWidth):
             self.stairCoords.append((x, y))
+            app.coordsOfObjectsFloorNeg1.append([x, y, self.stairWidth, self.stairHeight])
             y -= self.stairHeight
         for i in range(len(self.stairCoords)):
             drawRect(self.stairCoords[i][0], self.stairCoords[i][1], self.stairWidth, self.stairHeight, fill = self.colors[i])
