@@ -39,16 +39,16 @@ def redrawAll(app):
     if app.skyscraper.floor != -1:
         app.enemy.drawEnemy()
     # if app.loading == True:
-        # app.skys  craper.drawLoadingScreen()
+        # app.skyscraper.drawLoadingScreen()
 
 def onStep(app):
     # if app.skyscraper.floor == -1:
     #map scrolls right slowly
-    app.mapX += app.dx
     app.character.y += app.character.dy
     app.character.jump()
     app.skyscraper.changeCoord()
     if app.skyscraper.floor == 1:
+        app.mapX += app.dx
         app.enemy.move()
         # app.character.colliding()
     # app.stepsOccurred += 1
@@ -64,7 +64,7 @@ def onKeyHold(app, keys):
         app.character.dx = -app.character.dx
         app.character.x += app.character.dx
         while app.character.colliding():
-            app.character.x -= app.character.dx
+            app.character.x += 1
         app.character.dx = -app.character.dx
     # elif app.skyscraper.floor >= 1:
     #     if 'd' in keys and 'a' not in keys:
