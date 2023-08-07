@@ -1,5 +1,5 @@
 from cmu_graphics import *
-import random, tower, player
+import tower, player, enemy
 
 def onAppStart(app):
     #----------------#
@@ -26,6 +26,8 @@ def onAppStart(app):
     app.character.getSprites('../assets/player.jpg')
     app.character.spriteCount = 0
     app.character.load()
+    app.enemy = enemy.Enemy()
+    app.enemy.getSprites('../assets/ghost.png')
     # app.loading = False
     #-----------------------#
 
@@ -34,8 +36,10 @@ def redrawAll(app):
     # if app.loading == False:
     app.skyscraper.drawTower()
     app.character.drawPlayer()
+    if app.skyscraper.floor != -1:
+        app.enemy.drawEnemy()
     # if app.loading == True:
-        # app.skyscraper.drawLoadingScreen()
+        # app.skys  craper.drawLoadingScreen()
 
 def onStep(app):
     # if app.skyscraper.floor == -1:
@@ -44,6 +48,8 @@ def onStep(app):
     app.character.y += app.character.dy
     app.character.jump()
     app.skyscraper.changeCoord()
+    if app.skyscraper.floor == 1:
+        app.enemy.move()
         # app.character.colliding()
     # app.stepsOccurred += 1
 
@@ -76,7 +82,8 @@ def onKeyHold(app, keys):
 
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
-    if key == 'w' and app.character.jumping == False and not app.character.colliding():
+    if (key == 'w' and app.character.jumping == False and
+        not app.character.colliding()):
         app.character.dy = -9
         app.character.jumping = True
         # if app.character.colliding():
@@ -88,14 +95,17 @@ def onKeyPress(app, key):
         #     if app.stepsOccurred - start > 60:d
         #         app.character.y += 100
     if key == 's' and app.skyscraper.floor == -1:
-        #this movement should be temporary and be replaced with "s" being used for entering door
+        #this movement should be temporary and be replaced
+        # with "s" being used for entering door
         # app.character.y += 90
         pass
     elif (key == 'h' and app.skyscraper.floor < 3 and
-          app.skyscraper.atDoor(app.character.x, app.character.y)): #temporary for entering door
+          app.skyscraper.atDoor(app.character.x, app.character.y)):
+        #temporary for entering door
         app.skyscraper.floor = 1
         app.character.load()
         app.skyscraper.loadFloor()
+        app.enemy.load()
         print("loaded")
         # app.loading = True
         # app.loading = False

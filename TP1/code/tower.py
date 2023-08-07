@@ -147,9 +147,9 @@ class Tower:
         elif self.floor == 4: #in heaven
             pass
 
-    @staticmethod
-    def distance(x1, y1, x2, y2):
-        return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** (1/2)
+    # @staticmethod
+    # def distance(x1, y1, x2, y2):
+    #     return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** (1/2)
     
     # def drawLoadingScreen(self):
     #     drawRect(0, 0, app.width, app.height, fill = 'black', opacity = 100)
