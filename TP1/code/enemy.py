@@ -1,6 +1,7 @@
 from cmu_graphics import *
 from PIL import Image
 import random
+# image source: https://purepng.com/photo/3928/clipart-halloween-ghost-clipart
 class Enemy:
     def __init__(self):
         self.spriteImage = None
@@ -12,8 +13,10 @@ class Enemy:
         self.dy = 0
         self.width = 0
         self.height = 0
+        self.health = 100
 
-    def getSprites(self, file): #from Ray's cmu_graphics demos
+    def getSprites(self): #from Ray's cmu_graphics demos
+        file = '../assets/ghost.png'
         self.spriteImage = Image.open(file)
         self.spriteList = []
         for i in range(1):
@@ -22,7 +25,6 @@ class Enemy:
             self.spriteList.append(sprite)
     
     def drawEnemy(self): #from Ray's cmu_graphics demos
-        # ghost png from https://purepng.com/photo/3928/clipart-halloween-ghost-clipart
         sprite = self.spriteList[self.spriteCount]
         spriteWidth, spriteHeight = getImageSize(sprite)
         self.width = spriteWidth // 7
@@ -50,6 +52,9 @@ class Enemy:
         self.x += self.dx
         self.y += self.dy
 
+    def isHit(self):
+        if app.bullet.isHit():
+            pass
 
     @staticmethod
     def distance(x1, y1, x2, y2):

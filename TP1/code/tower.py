@@ -14,21 +14,25 @@ class Tower:
         self.doorY = 0
         self.doorWidth = 0
         self.doorHeight = 0
-        self.colors = [rgb(186, 205, 252), rgb(252, 200, 186), rgb(238, 252, 186),
-                       rgb(205, 252, 186), rgb(252, 186, 205)]
+        self.colors = [rgb(186, 205, 252), rgb(252, 200, 186),
+                       rgb(238, 252, 186), rgb(205, 252, 186),
+                       rgb(252, 186, 205)]
         self.groundY = app.height
     
     def drawTower(self):
         if self.floor == -1: #before entering tower
             #tower
-            drawRect(self.x, self.y, self.towerWidth, self.towerHeight, fill = 'gray')
+            drawRect(self.x, self.y, self.towerWidth, self.towerHeight,
+                     fill = 'gray')
             #door
-            drawRect(self.doorX, self.doorY, self.doorWidth, self.doorHeight, fill = 'brown')
+            drawRect(self.doorX, self.doorY, self.doorWidth, self.doorHeight,
+                     fill = 'brown')
             #stairs
             self.drawStartStairs()
         elif self.floor == 1: #in tower
             #tower in the back
-            drawRect(self.modifiedX, self.modifiedY, self.towerWidth, self.towerHeight, fill = 'gray')
+            drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
+                     self.towerHeight, fill = 'gray')
             #wall pattern
             # self.drawBrickPattern()
             #jumping up steps
@@ -60,7 +64,9 @@ class Tower:
         #     if newColor not in colors:
         #         colors.append(newColor)
         for i in range(len(self.stepCoords)):
-            drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor1[i][1], self.stepWidth, self.stepHeight, fill = self.colors[i])
+            drawRect(app.coordsOfObjectsFloor1[i][0],
+                     app.coordsOfObjectsFloor1[i][1], self.stepWidth,
+                     self.stepHeight, fill = self.colors[i])
             # app.coordsOfObjectsFloor1.append([self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight])
 
     def loadStepCoords(self):
@@ -72,7 +78,8 @@ class Tower:
         xrange = (200, 800)
         for step in range(5):
             x = random.randrange(xrange[0], xrange[1], 100)
-            self.originalStepCoords.append([x, y, self.stepWidth, self.stepHeight])
+            self.originalStepCoords.append([x, y, self.stepWidth,
+                                            self.stepHeight])
             y -= dy
         self.stepCoords = copy.deepcopy(self.originalStepCoords)
         app.coordsOfObjectsFloor1 = copy.deepcopy(self.stepCoords)
@@ -86,10 +93,12 @@ class Tower:
         startX = app.width - (self.stairWidth * 5) - 75
         for x in range(startX, app.width - self.stairWidth, self.stairWidth):
             self.stairCoords.append((x, y))
-            app.coordsOfObjectsFloorNeg1.append([x, y, self.stairWidth, self.stairHeight])
+            app.coordsOfObjectsFloorNeg1.append([x, y, self.stairWidth,
+                                                 self.stairHeight])
             y -= self.stairHeight
         for i in range(len(self.stairCoords)):
-            drawRect(self.stairCoords[i][0], self.stairCoords[i][1], self.stairWidth, self.stairHeight, fill = self.colors[i])
+            drawRect(self.stairCoords[i][0], self.stairCoords[i][1],
+                     self.stairWidth, self.stairHeight, fill = self.colors[i])
 
     # def loadStairColors(self):
     #     colors = []
