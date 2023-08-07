@@ -33,18 +33,18 @@ class Tower:
             # self.drawBrickPattern()
             #jumping up steps
             self.drawSteps()
-            self.drawGround()
+            # self.drawGround()
     
-    def drawGround(self):
-        width = 800
-        height = 245
-        for i in range(len(self.stepCoords), len(self.stepCoords) + 1):
-            drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor1[i][1], width, height, fill = rgb(193, 170, 207))
+    # def drawGround(self):
+    #     width = 800
+    #     height = 245
+    #     for i in range(len(self.stepCoords), len(self.stepCoords) + 1):
+    #         drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor1[i][1], width, height, fill = rgb(193, 170, 207))
 
-    def loadGround(self):
-        x, self.groundY, width, height = 200, 560, 1000, 245
-        self.originalGroundCoords = [x, self.groundY, width, height]
-        app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
+    # def loadGround(self):
+    #     x, y, width, height = 200, 555, 800, 245
+    #     self.originalGroundCoords = [x, y, width, height]
+    #     app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
 
     # def drawBrickPattern(self): #this makes it lag too much
     #     brickHeight = self.towerHeight // 60
@@ -67,7 +67,7 @@ class Tower:
         self.originalStepCoords = []
         self.stepHeight = 60
         self.stepWidth = 150
-        y = 250
+        y = 600
         dy = 200
         xrange = (200, 800)
         for step in range(5):
@@ -100,15 +100,16 @@ class Tower:
     #     return colors
 
     def changeCoord(self):
-        if self.floor != -1: #within tower
-            self.modifiedX = self.x + app.mapX
-            self.modifiedY = self.y + app.mapY
-            for i in range(len(self.originalStepCoords)):
-                app.coordsOfObjectsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
-                app.coordsOfObjectsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
-            for i in range(len(self.originalStepCoords), len(self.originalStepCoords) + 1):
-                app.coordsOfObjectsFloor1[i][0] = self.originalGroundCoords[i - len(self.originalStepCoords)] + app.mapX
-                app.coordsOfObjectsFloor1[i][1] = self.originalGroundCoords[i - len(self.originalStepCoords) + 1] + app.mapY
+        pass
+        # if self.floor != -1: #within tower
+        #     self.modifiedX = self.x + app.mapX
+        #     self.modifiedY = self.y + app.mapY
+        #     for i in range(len(self.originalStepCoords)):
+        #         app.coordsOfObjectsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
+        #         app.coordsOfObjectsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
+        #     for i in range(len(self.originalStepCoords), len(self.originalStepCoords) + 1):
+        #         app.coordsOfObjectsFloor1[i][0] = self.originalGroundCoords[i - len(self.originalStepCoords)] + app.mapX
+        #         app.coordsOfObjectsFloor1[i][1] = self.originalGroundCoords[i - len(self.originalStepCoords) + 1] + app.mapY
             # for i in range(len(self.stepCoords)):
             #     self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapX
             #     self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapY
@@ -139,7 +140,7 @@ class Tower:
             self.towerWidth = app.width * 4
             self.towerHeight = app.height * 4
             app.skyscraper.loadStepCoords()
-            app.skyscraper.loadGround()
+            # app.skyscraper.loadGround()
         elif self.floor == 2:
             pass
         elif self.floor == 3:
