@@ -82,7 +82,6 @@ class Player:
             elif self.colliding() and self.dy < 0:
                 self.dy = 1
                 while self.colliding():
-                    print("we are done")
                     self.y += self.dy
             elif self.colliding and self.dy > 0:
                 self.dy = -1
@@ -95,8 +94,6 @@ class Player:
             self.dy += self.d2y
             if self.colliding():
                 self.dy -= self.d2y
-        # elif app.skyscraper.floor >= 1:
-        #     pass
 
     def load(self): #prob the same for each floor
         if app.skyscraper.floor == -1:

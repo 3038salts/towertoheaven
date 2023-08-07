@@ -100,16 +100,15 @@ class Tower:
     #     return colors
 
     def changeCoord(self):
-        pass
-        # if self.floor != -1: #within tower
-        #     self.modifiedX = self.x + app.mapX
-        #     self.modifiedY = self.y + app.mapY
-        #     for i in range(len(self.originalStepCoords)):
-        #         app.coordsOfObjectsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
-        #         app.coordsOfObjectsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
-        #     for i in range(len(self.originalStepCoords), len(self.originalStepCoords) + 1):
-        #         app.coordsOfObjectsFloor1[i][0] = self.originalGroundCoords[i - len(self.originalStepCoords)] + app.mapX
-        #         app.coordsOfObjectsFloor1[i][1] = self.originalGroundCoords[i - len(self.originalStepCoords) + 1] + app.mapY
+        if self.floor >= 1: #within tower
+            self.modifiedX = self.x + app.mapX
+            self.modifiedY = self.y + app.mapY
+            for i in range(len(self.originalStepCoords)):
+                app.coordsOfObjectsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
+                app.coordsOfObjectsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
+            # for i in range(len(self.originalStepCoords), len(self.originalStepCoords) + 1):
+            #     app.coordsOfObjectsFloor1[i][0] = self.originalGroundCoords[i - len(self.originalStepCoords)] + app.mapX
+            #     app.coordsOfObjectsFloor1[i][1] = self.originalGroundCoords[i - len(self.originalStepCoords) + 1] + app.mapY
             # for i in range(len(self.stepCoords)):
             #     self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapX
             #     self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapY

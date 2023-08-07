@@ -12,8 +12,8 @@ def onAppStart(app):
     #to set the coordinates of everything except the player
     app.mapX = 0
     app.mapY = 0
-    app.dx = 8
-    app.dy = 50
+    app.dx = -0.1
+    # app.dy = 50
     #doesn't include player coordinates
     app.coordsOfObjectsFloorNeg1 = []
     app.coordsOfObjectsFloor1 = []
@@ -39,8 +39,11 @@ def redrawAll(app):
 
 def onStep(app):
     # if app.skyscraper.floor == -1:
+    #map scrolls right slowly
+    app.mapX += app.dx
     app.character.y += app.character.dy
     app.character.jump()
+    app.skyscraper.changeCoord()
         # app.character.colliding()
     # app.stepsOccurred += 1
 
@@ -74,7 +77,7 @@ def onKeyHold(app, keys):
 def onKeyPress(app, key):
     #for floor 0, we need to prevent crossing over
     if key == 'w' and app.character.jumping == False and not app.character.colliding():
-        app.character.dy = -10
+        app.character.dy = -9
         app.character.jumping = True
         # if app.character.colliding():
             # app.character.dy = 0
