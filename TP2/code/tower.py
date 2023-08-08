@@ -1,5 +1,5 @@
 from cmu_graphics import *
-import obstacles, random, copy
+import random, copy
 class Tower:
     def __init__(self):
         self.floor = 0
@@ -24,7 +24,7 @@ class Tower:
         if self.floor == 0: #before entering tower
             #tower
             drawRect(self.x, self.y, self.towerWidth, self.towerHeight,
-                     fill = 'gray')
+                     fill = 'gray', opacity = 80)
             #door
             drawRect(self.doorX, self.doorY, self.doorWidth, self.doorHeight,
                      fill = 'brown')
@@ -33,7 +33,7 @@ class Tower:
         elif self.floor == 1: #in tower
             #tower in the back
             drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
-                     self.towerHeight, fill = 'gray')
+                     self.towerHeight, fill = 'gray', opacity = 75)
             #wall pattern
             # self.drawBrickPattern()
             #jumping up steps
@@ -44,7 +44,8 @@ class Tower:
     #     width = 800
     #     height = 245
     #     for i in range(len(self.stepCoords), len(self.stepCoords) + 1):
-    #         drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor1[i][1], width, height, fill = rgb(193, 170, 207))
+    #         drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor
+    # 1[i][1], width, height, fill = rgb(193, 170, 207))
 
     # def loadGround(self):
     #     x, y, width, height = 200, 555, 800, 245
@@ -54,9 +55,12 @@ class Tower:
     # def drawBrickPattern(self): # this makes it lag too much
     #     brickHeight = self.towerHeight // 60
     #     brickWidth = self.towerWidth // 50
-    #     for row in range(self.modifiedX, self.modifiedX + self.towerWidth, brickWidth + 2):
-    #         for col in range(self.modifiedY, self.modifiedY + self.towerHeight, brickHeight + 2):
-    #             drawRect(row, col, brickWidth, brickHeight, fill = rgb(244, 248, 184), border = 'black', borderWidth = 1)
+    #     for row in range(self.modifiedX, self.modifiedX + self.towerWidth,
+    # brickWidth + 2):
+    #         for col in range(self.modifiedY, self.modifiedY + self.towerHeight
+    # , brickHeight + 2):
+    #             drawRect(row, col, brickWidth, brickHeight, fill = rgb(244, 
+    # 248, 184), border = 'black', borderWidth = 1)
 
     def drawSteps(self):
         # colors = []
