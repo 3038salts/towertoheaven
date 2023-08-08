@@ -24,20 +24,47 @@ class Enemy:
             #temporary sprite
             sprite = CMUImage(self.spriteImage.crop((0, 0, 1247, 1280)))
             self.spriteList.append(sprite)
-    
-    def drawEnemy(self): #from Ray's cmu_graphics demos
-        sprite = self.spriteList[self.spriteCount]
         spriteWidth, spriteHeight = getImageSize(sprite)
         self.width = spriteWidth // 7
         self.height = spriteHeight // 7
+    
+    def drawEnemy(self): #from Ray's cmu_graphics demos
+        sprite = self.spriteList[self.spriteCount]
         drawImage(sprite, self.modifiedX, self.modifiedY, width = self.width,
                   height = self.height, align='center')
     
     def spawn(self):
         if app.skyscraper.floor == 1:
-            x = random.randint(500, 800)
-            y = random.randint(100, 600)
-        app.enemyList.append(Enemy(x, y))
+            newEnemyX = random.randint(500, 800)
+            newEnemyY = random.randint(200, 600)
+            while self.isLegal(newEnemyX, newEnemyY) == False:
+                print('hi')
+                newEnemyX = random.randint(500, 800)
+                newEnemyY = random.randint(200, 600)
+        app.enemyList.append(Enemy(newEnemyX, newEnemyY))
+    
+    def isLegal(self, newEnemyX, newEnemyY):
+        for coord in app.coordsOfObjectsFloor1: # collision checking
+            x, y, width, height = coord[0], coord[1], coord[2], coord[3]
+            if (newEnemyX + (self.width // 2) > x and # ghost right over left
+                newEnemyX - (self.width // 2) < x + width and # ghost L over R
+                rounded(newEnemyY - (self.height // 2)) < y + height
+                # ghost top over bottom 
+                and rounded(newEnemyY + (self.height // 2)) > y):
+                # ghost bottom over top
+                return True
+        if (newEnemyX + self.width // 2 > # ghost right over player left
+            app.character.x - app.character.width // 2
+            and newEnemyX - (self.width // 2) < # ghost left over player right
+            app.character.x + app.character.width // 2
+            and rounded(newEnemyY - (self.height // 2)) <
+            # ghost top over player bottom 
+            app.character.y + app.character.height // 2
+            and rounded(newEnemyY + (self.height // 2)) >
+            app.character.y - app.character.width // 2):
+            # ghost bottom over player top
+            return True
+        return False
     
     def move(self): #move towards player
         if self.modifiedX > app.character.x:

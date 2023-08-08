@@ -75,7 +75,7 @@ class Player:
                     rounded(self.y - (self.height // 2) - self.dy) < y + height
                     #player top over bottom 
                     and rounded(self.y + (self.height // 2)) + self.dy > y):
-                    #player bottom over top)
+                    #player bottom over top
                     return True
                 # if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + width
                 # and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + height):

@@ -1,5 +1,6 @@
 from cmu_graphics import * #cmu graphics module
 import tower, player, enemy, bullet # classes
+import random # modules
 def onAppStart(app):
     #----------------#
     # window size and framerate
@@ -28,8 +29,11 @@ def onAppStart(app):
     # lists to keep track of them
     app.enemyList = []
     app.bulletList = []
-     # for spawning enemies at separate times
+     # for spawning enemies at separate times, first time after 2 secs
     app.stepsOccurred = 0
+    app.interval = 120
+    # to stop enemies from spawning continuously
+    app.enemySpawnCount = 0
     #-----------------------#
 
 def redrawAll(app):
@@ -43,13 +47,17 @@ def redrawAll(app):
         # app.skyscraper.drawLoadingScreen()
 
 def onStep(app):
-    app.character.y += app.character.dy # modfies player y position
+    app.character.y += app.character.dy # modifies player y position
     app.character.jump() # enforces gravity
-    app.skyscraper.changeCoord() # updates coordinates of tower and all objects
+    app.skyscraper.changeCoord() # updates coordinates of tower and objects
     if app.skyscraper.floor == 1:
-        if len(app.enemyList) < 3:
-            #do timing interval then spawn a ghost
+        app.stepsOccurred += 1
+        if (len(app.enemyList) < 3 and app.stepsOccurred > app.interval
+            and app.enemySpawnCount <= 5): # spawns a ghost every so often
+            app.stepsOccurred = 0 # resets time
+            app.interval = random.randint(420, 600)
             app.enemy.spawn()
+            app.enemySpawnCount += 1
         for enemy in app.enemyList:
             enemy.move()
     # app.stepsOccurred += 1
@@ -75,16 +83,18 @@ def onKeyHold(app, keys):
         if 'd' in keys and 'a' not in keys:
             # map moves left to make it appear as if player moves right
             app.mapX -= app.dx
+            app.skyscraper.changeCoord()
             while app.character.colliding():
-                app.mapX += 1
+                app.mapX += app.dx
                 app.skyscraper.changeCoord()
         elif 'a' in keys and 'd' not in keys:
             # map moves right to make it appear as if player moves left
             app.mapX += app.dx
+            app.skyscraper.changeCoord()
             while app.character.colliding():
-                app.mapX -= 1
+                app.mapX -= app.dx
                 app.skyscraper.changeCoord()
-
+    
 def onKeyPress(app, key):
     if (key == 'w' and app.character.jumping == False and
         not app.character.colliding()):
@@ -97,7 +107,6 @@ def onKeyPress(app, key):
         app.skyscraper.floor = 1
         app.character.load()
         app.skyscraper.loadFloor()
-        # app.enemy.load()
         # app.loading = True
     elif key == 'j' and app.skyscraper.floor != 0:
            app.bullet.spawnPlayerBullet()
