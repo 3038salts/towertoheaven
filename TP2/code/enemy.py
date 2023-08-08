@@ -37,8 +37,10 @@ class Enemy:
         if app.skyscraper.floor == 1:
             newEnemyX = random.randint(500, 800)
             newEnemyY = random.randint(200, 600)
+            i = 0
             while self.isLegal(newEnemyX, newEnemyY) == False:
-                print('hi')
+                print('hi', i)
+                i += 1
                 newEnemyX = random.randint(500, 800)
                 newEnemyY = random.randint(200, 600)
         app.enemyList.append(Enemy(newEnemyX, newEnemyY))
