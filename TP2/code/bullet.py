@@ -62,7 +62,7 @@ class Bullet:
 
     def move(self):
         self.x += self.dx + app.dx
-        print(app.dx)
+        # print(app.dx)
         self.y += self.dy
         self.modifiedX = self.x
         self.modifiedY = self.y

@@ -106,6 +106,7 @@ def onKeyHold(app, keys):
                 # character moves right
                 app.character.x += app.character.dx
                 while app.character.colliding():
+                    
                     # makes sure player doesn't go into object or out of bounds
                     app.character.x -= 1
             elif 'a' in keys and 'd' not in keys:
@@ -122,6 +123,7 @@ def onKeyHold(app, keys):
                 app.skyscraper.changeCoord()
                 while app.character.colliding():
                     app.mapX -= app.dx
+                    # print('rong')
                     app.skyscraper.changeCoord()
             elif 'a' in keys and 'd' not in keys:
                 # map moves right to make it appear as if player moves left
@@ -129,6 +131,7 @@ def onKeyHold(app, keys):
                 app.mapX += app.dx
                 app.skyscraper.changeCoord()
                 while app.character.colliding():
+                    # print('yuan')
                     app.mapX -= app.dx
                     app.skyscraper.changeCoord()
     

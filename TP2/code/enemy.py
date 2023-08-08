@@ -45,7 +45,7 @@ class Enemy:
                 # print('hi', i)
                 # i += 1
                 # print(newEnemyX, newEnemyY)
-                newEnemyX = app.mapX + random.randint(500, 900)
+                newEnemyX = random.randint(100, 800)
                 newEnemyY = app.mapY + random.randint(200, 600)
         app.enemyList.append(Enemy(newEnemyX, newEnemyY))
     
@@ -57,6 +57,7 @@ class Enemy:
                 rounded(newEnemyY - (self.height // 2)) < y + height
                 # ghost top over bottom 
                 and rounded(newEnemyY + (self.height // 2)) > y):
+                # print("123")
                 # ghost bottom over top
                 return True
         if (newEnemyX + self.width // 2 > # ghost right over player left
@@ -68,6 +69,7 @@ class Enemy:
             app.character.y + app.character.height // 2
             and rounded(newEnemyY + (self.height // 2)) >
             app.character.y - app.character.width // 2):
+            # print("456")
             # ghost bottom over player top
             return True
         return False

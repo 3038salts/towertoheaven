@@ -14,8 +14,8 @@ class Tower:
         self.doorY = 0
         self.doorWidth = 0
         self.doorHeight = 0
-        self.colors = [rgb(186, 205, 252), rgb(252, 200, 186),
-                       rgb(238, 252, 186), rgb(205, 252, 186),
+        self.colors = [rgb(186, 205, 252), rgb(252, 200, 186), # blue, red
+                       rgb(238, 252, 186), rgb(205, 252, 186), # yellow, green
                        rgb(252, 186, 205)]
         self.groundY = app.height
         self.loadFloor()
@@ -34,8 +34,6 @@ class Tower:
             #tower in the back
             drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
                      self.towerHeight, fill = 'gray', opacity = 75)
-            #wall pattern
-            # self.drawBrickPattern()
             #jumping up steps
             self.drawSteps()
             # self.drawGround()
@@ -52,22 +50,7 @@ class Tower:
     #     self.originalGroundCoords = [x, y, width, height]
     #     app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
 
-    # def drawBrickPattern(self): # this makes it lag too much
-    #     brickHeight = self.towerHeight // 60
-    #     brickWidth = self.towerWidth // 50
-    #     for row in range(self.modifiedX, self.modifiedX + self.towerWidth,
-    # brickWidth + 2):
-    #         for col in range(self.modifiedY, self.modifiedY + self.towerHeight
-    # , brickHeight + 2):
-    #             drawRect(row, col, brickWidth, brickHeight, fill = rgb(244, 
-    # 248, 184), border = 'black', borderWidth = 1)
-
     def drawSteps(self):
-        # colors = []
-        # while len(colors) != len(self.colors):
-        #     newColor = (self.colors[random.randint(0, 4)])
-        #     if newColor not in colors:
-        #         colors.append(newColor)
         for i in range(len(self.stepCoords)):
             drawRect(app.coordsOfObjectsFloor1[i][0],
                      app.coordsOfObjectsFloor1[i][1], self.stepWidth,
@@ -79,9 +62,11 @@ class Tower:
         self.stepWidth = 150
         y = 600
         dy = 200
-        xrange = (200, 800)
+        xRange = [4000, 4900]
+        xChange = 100
         for step in range(5):
-            x = random.randrange(xrange[0], xrange[1], 100)
+            x = random.randrange(xRange[0] + xChange, xRange[1], 100)
+            xChange += 100
             self.originalStepCoords.append([x, y, self.stepWidth,
                                             self.stepHeight])
             y -= dy
@@ -149,8 +134,8 @@ class Tower:
         elif self.floor == 1:
             self.x = self.modifiedX = 100
             self.y = self.modified = -2 * app.height
-            self.towerWidth = app.width * 4
-            self.towerHeight = app.height * 4
+            self.towerWidth = app.width * 2
+            self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
             # app.skyscraper.loadGround()
         elif self.floor == 2:
