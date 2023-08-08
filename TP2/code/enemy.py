@@ -3,12 +3,12 @@ from PIL import Image
 import random
 # image source: https://purepng.com/photo/3928/clipart-halloween-ghost-clipart
 class Enemy:
-    def __init__(self):
+    def __init__(self, x, y):
         self.spriteImage = None
         self.spriteList = None
         self.spriteCount = 0
-        self.x = 0
-        self.y = 0
+        self.modifiedX = self.x = x
+        self.modifiedY = self.y = y
         self.dx = 8
         self.dy = 0
         self.width = 0
@@ -29,28 +29,32 @@ class Enemy:
         spriteWidth, spriteHeight = getImageSize(sprite)
         self.width = spriteWidth // 7
         self.height = spriteHeight // 7
-        drawImage(sprite, self.x, self.y, width = self.width,
+        drawImage(sprite, self.modifiedX, self.modifiedY, width = self.width,
                   height = self.height, align='center')
     
-    def load(self):
-        self.x = random.randint(500, 700)
-        self.y = app.height - 300
+    def spawn(self):
+        if app.skyscraper.floor == 1:
+            x = random.randint(500, 800)
+            y = random.randint(100, 600)
+        app.enemyList.append(Enemy(x, y))
     
     def move(self): #move towards player
-        if self.x > app.character.x:
-            self.dx = -1
-        elif self.x < app.character.x:
-            self.dx = 1
+        if self.modifiedX > app.character.x:
+            self.dx = -2
+        elif self.modifiedX < app.character.x:
+            self.dx = 2
         else:
             self.dx = 0
-        if self.y > app.character.y:
-            self.dy = -1
-        elif self.y < app.character.y:
-            self.dy = 1
+        if self.modifiedY > app.character.y:
+            self.dy = -2
+        elif self.modifiedY < app.character.y:
+            self.dy = 2
         else:
             self.dy = 0
         self.x += self.dx
         self.y += self.dy
+        self.modifiedX = app.mapX + self.x
+        self.modifiedY = app.mapY + self.y
 
     def isHit(self):
         if app.bullet.isHit():
