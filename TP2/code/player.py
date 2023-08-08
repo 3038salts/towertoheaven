@@ -16,6 +16,8 @@ class Player:
         self.width = 0
         self.height = 0
         self.jumping = False
+        self.getSprites()
+        self.load()
     
     def getSprites(self): #from Ray's cmu_graphics demos
         file = '../assets/player.jpg'
@@ -42,8 +44,8 @@ class Player:
         elif self.x + (self.width // 2) - app.dx > app.width:
             #right bound for screen
             self.x = app.width - (self.width // 2)
-        if app.skyscraper.floor == -1:
-            for coord in app.coordsOfObjectsFloorNeg1:
+        if app.skyscraper.floor == 0:
+            for coord in app.coordsOfObjectsFloor0:
                 x, y, width, height = coord[0], coord[1], coord[2], coord[3]
                 if (self.x + (self.width // 2) > x and
                     #player right over left
@@ -81,7 +83,7 @@ class Player:
         return False
 
     def jump(self): # enables jump with gravity
-        # if app.skyscraper.floor == -1:
+        # if app.skyscraper.floor == 0:
         #player on surface or hit something
         if (self.colliding() or self.y + (self.height // 2) >
             app.skyscraper.groundY):
@@ -105,7 +107,7 @@ class Player:
                 self.dy -= self.d2y
 
     def load(self): #prob the same for each floor after start
-        if app.skyscraper.floor == -1:
+        if app.skyscraper.floor == 0:
             self.x = 150
             self.y = app.height - 110 // 2
         else: #after entering

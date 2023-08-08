@@ -2,7 +2,7 @@ from cmu_graphics import *
 import obstacles, random, copy
 class Tower:
     def __init__(self):
-        self.floor = -1
+        self.floor = 0
         self.totalFloors = 3
         self.x = 900
         self.y = 0
@@ -18,9 +18,10 @@ class Tower:
                        rgb(238, 252, 186), rgb(205, 252, 186),
                        rgb(252, 186, 205)]
         self.groundY = app.height
+        self.loadFloor()
     
     def drawTower(self):
-        if self.floor == -1: #before entering tower
+        if self.floor == 0: #before entering tower
             #tower
             drawRect(self.x, self.y, self.towerWidth, self.towerHeight,
                      fill = 'gray')
@@ -93,7 +94,7 @@ class Tower:
         startX = app.width - (self.stairWidth * 5) - 75
         for x in range(startX, app.width - self.stairWidth, self.stairWidth):
             self.stairCoords.append((x, y))
-            app.coordsOfObjectsFloorNeg1.append([x, y, self.stairWidth,
+            app.coordsOfObjectsFloor0.append([x, y, self.stairWidth,
                                                  self.stairHeight])
             y -= self.stairHeight
         for i in range(len(self.stairCoords)):
@@ -126,14 +127,14 @@ class Tower:
     
     #checks if center of player is within door
     def atDoor(self, playerx, playery):
-        if (self.floor == -1 and self.doorX <= playerx <= self.doorX + self.doorWidth
+        if (self.floor == 0 and self.doorX <= playerx <= self.doorX + self.doorWidth
             and self.doorY <= playery <= self.doorY + self.doorHeight):
             return True
         #add more cases for other floors
         return False
 
     def loadFloor(self):
-        if self.floor == -1: #before entering tower
+        if self.floor == 0: #before entering tower
             #tower is in a fixed position
             self.towerWidth = app.width - 900
             self.towerHeight = app.height - 400

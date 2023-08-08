@@ -14,6 +14,7 @@ class Enemy:
         self.width = 0
         self.height = 0
         self.health = 100
+        self.getSprites()
 
     def getSprites(self): #from Ray's cmu_graphics demos
         file = '../assets/ghost.png'
