@@ -51,7 +51,7 @@ class Tower:
     #     self.originalGroundCoords = [x, y, width, height]
     #     app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
 
-    # def drawBrickPattern(self): #this makes it lag too much
+    # def drawBrickPattern(self): # this makes it lag too much
     #     brickHeight = self.towerHeight // 60
     #     brickWidth = self.towerWidth // 50
     #     for row in range(self.modifiedX, self.modifiedX + self.towerWidth, brickWidth + 2):
@@ -68,7 +68,6 @@ class Tower:
             drawRect(app.coordsOfObjectsFloor1[i][0],
                      app.coordsOfObjectsFloor1[i][1], self.stepWidth,
                      self.stepHeight, fill = self.colors[i])
-            # app.coordsOfObjectsFloor1.append([self.stepCoords[i][0], self.stepCoords[i][1], self.stepWidth, self.stepHeight])
 
     def loadStepCoords(self):
         self.originalStepCoords = []

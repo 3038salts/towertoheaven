@@ -32,6 +32,10 @@ def onAppStart(app):
      # for spawning enemies at separate times, first time after 2 secs
     app.stepsOccurred = 0
     app.interval = 120
+    # for limiting attack speed, 5 shots per second
+    app.stepsPassed = 0
+    app.attackSpeed = 12
+    app.startCountingShots = False
     # to stop enemies from spawning continuously
     app.enemySpawnCount = 0
     #-----------------------#
@@ -60,7 +64,8 @@ def onStep(app):
             app.enemySpawnCount += 1
         for enemy in app.enemyList:
             enemy.move()
-    # app.stepsOccurred += 1
+    if app.startCountingShots == True:
+        app.stepsPassed += 1
     # app.character.isHit()
     # app.enemy.isHit()
     # app.bullet.isHit()
@@ -100,16 +105,17 @@ def onKeyPress(app, key):
         not app.character.colliding()):
         app.character.dy = -12
         app.character.jumping = True
-        # if app.character.colliding():
-            # app.character.dy = 0
     if (key == 's' and app.skyscraper.floor < 3 and
         app.skyscraper.atDoor(app.character.x, app.character.y)): #enter door
         app.skyscraper.floor = 1
         app.character.load()
         app.skyscraper.loadFloor()
         # app.loading = True
-    elif key == 'j' and app.skyscraper.floor != 0:
-           app.bullet.spawnPlayerBullet()
+    elif key == 'j' and app.skyscraper.floor >= 1:
+        app.startCountingShots = True
+        if app.stepsPassed >= app.attackSpeed:
+            app.bullet.spawnPlayerBullet()
+            app.stepsPassed = 0
     else:
         pass
     

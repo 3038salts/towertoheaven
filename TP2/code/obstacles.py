@@ -1,4 +1,5 @@
 class Obstacles:
+    # should prob move the blocks here later
     def __init__(self):
         self.x = 0
         self.y = 0
