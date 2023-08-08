@@ -29,7 +29,7 @@ def onAppStart(app):
     #---------------------------#
     # instantiate enemy and bullets for calling class methods
     app.enemy = enemy.Enemy(0, 0)
-    app.bullet= bullet.Bullet(0, 0, 0, 0)
+    app.bullet = bullet.Bullet(0, 0, 0, 0, 0, 0)
     # lists to keep track of them
     app.enemyList = []
     app.bulletList = []
@@ -78,25 +78,29 @@ def onStep(app):
                 app.interval = random.randint(420, 600)
                 app.enemy.spawn()
                 app.enemySpawnCount += 1
-            for enemy in app.enemyList:
-                enemy.move()
             index = 0
+            while index < len(app.enemyList):
+                # print(f'HEALTH: {app.enemyList[index].health}')
+                app.enemyList[index].move()
+                app.enemyList[index].isHit() # autmoatically removes bullets that hit ghost
+                # and automatically depeletes health
+                index += 1
+            index = 0 # reset index at the end
             while index < len(app.bulletList):
                 if (app.bulletList[index].x > app.width or
                     app.bulletList[index].x < 0 or
                     app.bulletList[index].y > app.height or
                     app.bulletList[index]. y < 0):
-                    app.bulletList.pop(index) # removes off-screen bullets
+                    # removes off-screen bullets
+                    app.bulletList.pop(index)
                 else: # moves the bullets
                     app.bulletList[index].move()
                     index += 1
-            if index != 0: # reset index at the end
-                index = 0
+            index = 0 # reset index at the end
         if app.startCountingShots == True:
             app.stepsPassed += 1
         app.dx = 0 # reset dx in case player isn't moving
         # app.character.isHit()
-        # app.enemy.isHit()
         # app.bullet.isHit()
 
 def onKeyHold(app, keys):
@@ -123,7 +127,6 @@ def onKeyHold(app, keys):
                 app.skyscraper.changeCoord()
                 while app.character.colliding():
                     app.mapX -= app.dx
-                    # print('rong')
                     app.skyscraper.changeCoord()
             elif 'a' in keys and 'd' not in keys:
                 # map moves right to make it appear as if player moves left
@@ -131,7 +134,6 @@ def onKeyHold(app, keys):
                 app.mapX += app.dx
                 app.skyscraper.changeCoord()
                 while app.character.colliding():
-                    # print('yuan')
                     app.mapX -= app.dx
                     app.skyscraper.changeCoord()
     
@@ -157,7 +159,7 @@ def onKeyPress(app, key):
     elif key == 'p' and app.paused == True:
         app.paused = False
 
-def onMousePress(app, mouseX, mouseY): # for debugging rn
+def onMousePress(app, mouseX, mouseY): # for debugging rn, later for selection
     print(mouseX, mouseY)
 
 def main():

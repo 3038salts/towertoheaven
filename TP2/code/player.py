@@ -93,12 +93,10 @@ class Player:
             elif self.colliding() and self.dy < 0:
                 self.dy = 1
                 while self.colliding():
-                    print('no')
                     self.y += self.dy
             elif self.colliding and self.dy > 0:
                 self.dy = -1
                 while self.colliding():
-                    print('cry')
                     self.y += self.dy
             self.dy = 0
             self.jumping = False
@@ -115,6 +113,3 @@ class Player:
         else: #after entering
             self.x = 200
             self.y = 730
-    
-    def isHit(self): # hit by a bullet
-        pass

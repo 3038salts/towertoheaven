@@ -57,7 +57,6 @@ class Enemy:
                 rounded(newEnemyY - (self.height // 2)) < y + height
                 # ghost top over bottom 
                 and rounded(newEnemyY + (self.height // 2)) > y):
-                # print("123")
                 # ghost bottom over top
                 return True
         if (newEnemyX + self.width // 2 > # ghost right over player left
@@ -69,7 +68,6 @@ class Enemy:
             app.character.y + app.character.height // 2
             and rounded(newEnemyY + (self.height // 2)) >
             app.character.y - app.character.width // 2):
-            # print("456")
             # ghost bottom over player top
             return True
         return False
@@ -91,11 +89,24 @@ class Enemy:
         self.y += self.dy
         self.modifiedX = app.mapX + self.x
         self.modifiedY = app.mapY + self.y
-
-    def isHit(self):
-        if app.bullet.isHit():
-            pass
-
-    # @staticmethod
-    # def distance(x1, y1, x2, y2):
-    #     return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** (1/2)
+            
+    def isHit(self): # checks if ghost is hit by a bullet
+        # automatically deletes bullet and depeletes the health of ghost
+        for bullet in app.bulletList:
+            # bullet.dx, bullet.dy
+            if (bullet.x + bullet.width // 2 > # bullet right over ghost left
+                self.modifiedX - self.width // 2
+                and bullet.x - (bullet.width // 2) < # bullet left over ghost right
+                self.modifiedX + self.width // 2
+                and rounded(bullet.y - (bullet.height // 2)) <
+                # bullet top over ghost bottom 
+                self.modifiedY + self.height // 2
+                and rounded(bullet.y + (bullet.height // 2)) >
+                self.modifiedY - self.width // 2):
+                # bullet bottom over ghost top
+                app.bulletList.remove(bullet)
+                self.health -= 10
+                if self.health == 0: # ghost dies
+                    app.enemyList.remove(self)
+                return True
+        return False

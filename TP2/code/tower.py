@@ -133,7 +133,7 @@ class Tower:
             self.doorHeight = self.towerHeight // 2
         elif self.floor == 1:
             self.x = self.modifiedX = 100
-            self.y = self.modified = -2 * app.height
+            self.y = self.modified = -app.height
             self.towerWidth = app.width * 2
             self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
