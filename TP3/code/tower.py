@@ -63,7 +63,7 @@ class Tower:
         self.stepWidth = 150
         y = 600
         dy = 200
-        xRange = [4000, 4900]
+        xRange = [1800, 2400]
         xChange = 100
         for step in range(5):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)
@@ -91,7 +91,7 @@ class Tower:
                      self.stairWidth, self.stairHeight, fill = self.colors[i])
 
     def draw1stFloorSign(self):
-        drawRect(200, 300, 200, 150, fill = rgb(29, 242, 99))
+        drawRect(200, 300, 200, 150, fill = rgb(186, 205, 252))
         drawLabel('Move right to proceed', 300, 375)
 
     # def loadStairColors(self):

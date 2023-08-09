@@ -26,6 +26,8 @@ def onAppStart(app):
     # instantiate tower and player
     app.skyscraper = tower.Tower()
     app.character = player.Player()
+    # player sprite counter
+    app.stepsElapsed = 0
     #---------------------------#
     # instantiate enemy and bullets for calling class methods
     app.enemy = enemy.Enemy(0, 0)
@@ -67,6 +69,17 @@ def drawOutsideTowerBG(app):
 
 def onStep(app):
     if app.paused == False:
+        if app.character.jumping == False and app.character.moving == True:
+            app.stepsElapsed += 1
+        if app.character.moving == False:
+            app.character.spriteCount = 2
+        elif app.character.jumping == True:
+            app.stepsElapsed = 0
+            app.character.spriteCount = 0
+        if app.stepsElapsed >= 6: # sprite updates every 6 frames
+            app.character.spriteCount = ((app.character.spriteCount + 1) 
+                                         % len(app.character.spriteList))
+            app.stepsElapsed = 0
         app.character.y += app.character.dy # modifies player y position
         app.character.jump() # enforces gravity
         app.skyscraper.changeCoord() # updates coordinates of tower and objects
@@ -82,7 +95,7 @@ def onStep(app):
             while index < len(app.enemyList):
                 # print(f'HEALTH: {app.enemyList[index].health}')
                 app.enemyList[index].move()
-                app.enemyList[index].isHit() # autmoatically removes bullets that hit ghost
+                app.enemyList[index].isHit() # automatically removes bullets that hit ghost
                 # and automatically depeletes health
                 index += 1
             index = 0 # reset index at the end
@@ -99,6 +112,8 @@ def onStep(app):
             index = 0 # reset index at the end
         if app.startCountingShots == True:
             app.stepsPassed += 1
+        if app.stepsPassed > 1200: # prevent integer overflow
+            app.stepsPassed = 0
         app.dx = 0 # reset dx in case player isn't moving
         # app.character.isHit()
         # app.bullet.isHit()
@@ -107,13 +122,14 @@ def onKeyHold(app, keys):
     if app.paused == False:
         if app.skyscraper.floor == 0:
             if 'd' in keys and 'a' not in keys:
+                app.character.moving = True
                 # character moves right
                 app.character.x += app.character.dx
                 while app.character.colliding():
-                    
                     # makes sure player doesn't go into object or out of bounds
                     app.character.x -= 1
             elif 'a' in keys and 'd' not in keys:
+                app.character.moving = True
                 # character moves left
                 app.character.x -= app.character.dx
                 while app.character.colliding():
@@ -121,6 +137,7 @@ def onKeyHold(app, keys):
                     app.character.x += 1
         elif app.skyscraper.floor >= 1:
             if 'd' in keys and 'a' not in keys:
+                app.character.moving = True
                 # map moves left to make it appear as if player moves right
                 app.dx = app.dxRight
                 app.mapX += app.dx
@@ -129,6 +146,7 @@ def onKeyHold(app, keys):
                     app.mapX -= app.dx
                     app.skyscraper.changeCoord()
             elif 'a' in keys and 'd' not in keys:
+                app.character.moving = True
                 # map moves right to make it appear as if player moves left
                 app.dx = app.dxLeft
                 app.mapX += app.dx
@@ -136,6 +154,9 @@ def onKeyHold(app, keys):
                 while app.character.colliding():
                     app.mapX -= app.dx
                     app.skyscraper.changeCoord()
+
+def onKeyRelease(app, key):
+    app.character.moving = False
     
 def onKeyPress(app, key):
     if app.paused == False:
