@@ -1,6 +1,6 @@
 from cmu_graphics import * # cmu graphics module
 from PIL import Image # pillow for image processing 
-import tower, player, enemy, bullet # classes
+import tower, player, enemy, bullet, pit, spinningBlade # classes
 import random # modules
 def onAppStart(app):
     #----------------#
@@ -11,17 +11,17 @@ def onAppStart(app):
     app.paused = False
     # app.loading = False
     #-----------#
-    # set coordinates of everything except the player
+    # set coordinates of map
     app.mapX = 0
     app.mapY = 0
     app.dx = 0 # map moves, not player after floor 0
     app.dxLeft = 9
     app.dxRight = -9
-    # lists don't include player, tower, and enemy coordinates
-    app.coordsOfObjectsFloor0 = []
-    app.coordsOfObjectsFloor1 = []
-    app.coordsOfObjectsFloor2 = []
-    app.coordsOfObjectsFloor3 = []
+    # keep track of stair coordinates
+    app.stairCoordsFloor0 = []
+    app.stairCoordsFloor1 = []
+    app.stairCoordsFloor2 = []
+    app.stairCoordsFloor3 = []
     #-----------#
     # instantiate tower and player
     app.skyscraper = tower.Tower()
@@ -45,6 +45,13 @@ def onAppStart(app):
     # to stop enemies from spawning continuously
     app.enemySpawnCount = 0
     #-----------------------#
+    # instantiate obstacles
+    app.lava = pit.Pit()
+    app.blade = spinningBlade.SpinningBlade(0, 0)
+    # lists to keep track of them
+    app.lavaList = []
+    app.bladeList = []
+    app.generalStepCounter = 0 # used for animating blade right now
 
 def redrawAll(app):
     drawOutsideTowerBG(app)
@@ -56,14 +63,19 @@ def redrawAll(app):
             enemy.drawEnemy()
         for bullet in app.bulletList:
             bullet.drawBullet()
+        for saw in app.bladeList:
+            saw.drawBlade()
     # if app.loading == True:
         # app.skyscraper.drawLoadingScreen()
 
 def drawOutsideTowerBG(app):
     # background image source: https://www.vecteezy.com/vector-art/540991-
     # cartoon-forest-seamless-background-elements-for-mobile-games
-    # some code from Ray's cmu_graphics demos
-    image = CMUImage(Image.open('../assets/forest.jpeg'))
+    # from Ray's cmu_graphics demos
+    if app.skyscraper.floor <= 1:
+        image = CMUImage(Image.open('../assets/forest.jpeg'))
+    elif app.skyscraper.floor == 2:
+        image = CMUImage(Image.open('../assets/skyline.jpeg'))
     bgWidth, bgHeight = getImageSize(image)
     drawImage(image, 0, 0, width = bgWidth, height = bgHeight)
 
@@ -110,13 +122,20 @@ def onStep(app):
                     app.bulletList[index].move()
                     index += 1
             index = 0 # reset index at the end
-        if app.startCountingShots == True:
-            app.stepsPassed += 1
-        if app.stepsPassed > 1200: # prevent integer overflow
-            app.stepsPassed = 0
-        app.dx = 0 # reset dx in case player isn't moving
-        # app.character.isHit()
-        # app.bullet.isHit()
+            app.generalStepCounter += 1
+            for saw in app.bladeList:
+                if app.generalStepCounter >= 6: # sprite updates every 6 frames
+                    saw.spriteCount = ((saw.spriteCount + 1)
+                                     % len(saw.spriteList))
+                    app.generalStepCounter = 0
+                saw.move()
+            if app.startCountingShots == True:
+                app.stepsPassed += 1
+            if app.stepsPassed > 1200: # prevent memory from dying
+                app.stepsPassed = 0
+            app.dx = 0 # reset dx in case player isn't moving
+            # app.character.isHit()
+            # app.bullet.isHit()
 
 def onKeyHold(app, keys):
     if app.paused == False:
@@ -156,7 +175,8 @@ def onKeyHold(app, keys):
                     app.skyscraper.changeCoord()
 
 def onKeyRelease(app, key):
-    app.character.moving = False
+    if key == 'd' or key == 'a':
+        app.character.moving = False
     
 def onKeyPress(app, key):
     if app.paused == False:
@@ -164,11 +184,12 @@ def onKeyPress(app, key):
             not app.character.colliding()):
             app.character.dy = -12
             app.character.jumping = True
-        elif (key == 's' and app.skyscraper.floor < 3 and
-            app.skyscraper.atDoor(app.character.x, app.character.y)): #enter door
+        elif (key == 's' and app.skyscraper.floor < 3 and # to enter door
+            app.skyscraper.atDoor(app.character.x, app.character.y)):
             app.skyscraper.floor = 1
             app.character.load()
             app.skyscraper.loadFloor()
+            app.blade.load()
             # app.loading = True
         elif key == 'j' and app.skyscraper.floor >= 1:
             app.startCountingShots = True

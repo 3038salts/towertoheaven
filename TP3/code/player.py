@@ -12,11 +12,12 @@ class Player:
         self.y = 0
         self.dx = 8
         self.dy = 0
-        self.d2y = 0.32 #gravitational acceleration
+        self.d2y = 0.32 # gravitational acceleration
         self.width = 0
         self.height = 0
         self.jumping = False
         self.moving = False
+        self.health = 100
         self.getSprites()
         self.load()
     
@@ -26,8 +27,7 @@ class Player:
         self.spriteList = []
         for frame in range(file.n_frames): # for every frame index
             file.seek(frame) # seek to the frame
-            fr = file.resize((file.size[0], file.size[1])) # width, height
-            fr = fr.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+            fr = file.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
             fr = CMUImage(fr)
             self.spriteList.append(fr)
     
@@ -36,6 +36,10 @@ class Player:
         self.width, self.height = getImageSize(sprite)
         drawImage(sprite, self.x, self.y, width = self.width,
                   height = self.height, align='center')
+    
+    def drawPlayerStats(self):
+        drawRect()
+        drawLabel()
 
     def colliding(self): # keeps player in tower and not inside other objects
         if self.x - (self.width // 2) < 0: # left bound for screen
@@ -44,7 +48,7 @@ class Player:
             #right bound for screen
             self.x = app.width - (self.width // 2)
         if app.skyscraper.floor == 0:
-            for coord in app.coordsOfObjectsFloor0:
+            for coord in app.stairCoordsFloor0:
                 x, y, width, height = coord[0], coord[1], coord[2], coord[3]
                 if (self.x + (self.width // 2) > x and
                     #player right over left
@@ -59,15 +63,11 @@ class Player:
         elif app.skyscraper.floor >= 1: #for the tower bounds
             if app.skyscraper.modifiedX > self.x - (self.width // 2):
                 # left bound
-                # app.mapX = self.x - (self.width // 2) - app.skyscraper.x
-                # - app.dx
                 return True
             elif (app.skyscraper.modifiedX + app.skyscraper.towerWidth
                   < self.x + (self.width // 2)): #right bound
-                # app.mapX = self.x + (self.width // 2) -
-                # app.skyscraper.towerWidth - app.skyscraper.x + app.dx
                 return True
-            for coord in app.coordsOfObjectsFloor1: #collision checking
+            for coord in app.stairCoordsFloor1: #collision checking
                 x, y, width, height = coord[0], coord[1], coord[2], coord[3]
                 if (self.x + (self.width // 2) > x and #player right over left
                     self.x - (self.width // 2) < x + width and #player L over R
@@ -76,13 +76,9 @@ class Player:
                     and rounded(self.y + (self.height // 2)) + self.dy > y):
                     #player bottom over top
                     return True
-                # if (self.x + (self.width // 2) >= x - app.dx and self.x - (self.width // 2) + app.dx < x + width
-                # and self.y + (self.height // 2) >= y and self.y - (self.height // 2) <= y + height):
-                #     return True
         return False
 
     def jump(self): # enables jump with gravity
-        # if app.skyscraper.floor == 0:
         #player on surface or hit something
         if (self.colliding() or self.y + (self.height // 2) >
             app.skyscraper.groundY):
@@ -110,5 +106,5 @@ class Player:
             self.x = 150
             self.y = app.height - 110 // 2
         else: #after entering
-            self.x = 200
+            self.x = 500
             self.y = 730

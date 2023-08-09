@@ -35,13 +35,10 @@ class Enemy:
     
     def spawn(self):
         if app.skyscraper.floor == 1:
-            newEnemyX = app.mapX + random.randint(100, 800)
+            newEnemyX = app.mapX + random.randint(1000, 1500)
             newEnemyY = app.mapY + random.randint(200, 600)
             i = 0
             while self.isLegal(newEnemyX, newEnemyY) == False:
-                # sometimes goes into an infinite loop, prob due to
-                # the range of the random coordinates being taken up
-                # by a full block, need to fix
                 # print('hi', i)
                 # i += 1
                 # print(newEnemyX, newEnemyY)
@@ -50,7 +47,7 @@ class Enemy:
         app.enemyList.append(Enemy(newEnemyX, newEnemyY))
     
     def isLegal(self, newEnemyX, newEnemyY):
-        for coord in app.coordsOfObjectsFloor1: # collision checking
+        for coord in app.stairCoordsFloor1: # collision checking
             x, y, width, height = coord[0], coord[1], coord[2], coord[3]
             if (newEnemyX + (self.width // 2) > x and # ghost right over left
                 newEnemyX - (self.width // 2) < x + width and # ghost L over R

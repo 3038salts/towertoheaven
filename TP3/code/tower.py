@@ -16,7 +16,7 @@ class Tower:
         self.doorHeight = 0
         self.colors = [rgb(186, 205, 252), rgb(252, 200, 186), # blue, red
                        rgb(238, 252, 186), rgb(205, 252, 186), # yellow, green
-                       rgb(252, 186, 205)]
+                       rgb(234, 176, 129)] # orange
         self.groundY = app.height
         self.loadFloor()
     
@@ -37,24 +37,11 @@ class Tower:
             self.draw1stFloorSign()
             # steps to ascend floor (not implemented yet)
             self.drawSteps()
-            # self.drawGround()
-    
-    # def drawGround(self):
-    #     width = 800
-    #     height = 245
-    #     for i in range(len(self.stepCoords), len(self.stepCoords) + 1):
-    #         drawRect(app.coordsOfObjectsFloor1[i][0], app.coordsOfObjectsFloor
-    # 1[i][1], width, height, fill = rgb(193, 170, 207))
-
-    # def loadGround(self):
-    #     x, y, width, height = 200, 555, 800, 245
-    #     self.originalGroundCoords = [x, y, width, height]
-    #     app.coordsOfObjectsFloor1.append(copy.copy(self.originalGroundCoords))
 
     def drawSteps(self):
         for i in range(len(self.stepCoords)):
-            drawRect(app.coordsOfObjectsFloor1[i][0],
-                     app.coordsOfObjectsFloor1[i][1], self.stepWidth,
+            drawRect(app.stairCoordsFloor1[i][0],
+                     app.stairCoordsFloor1[i][1], self.stepWidth,
                      self.stepHeight, fill = self.colors[i])
 
     def loadStepCoords(self):
@@ -72,7 +59,7 @@ class Tower:
                                             self.stepHeight])
             y -= dy
         self.stepCoords = copy.deepcopy(self.originalStepCoords)
-        app.coordsOfObjectsFloor1 = copy.deepcopy(self.stepCoords)
+        app.stairCoordsFloor1 = copy.deepcopy(self.stepCoords)
 
     def drawStartStairs(self):
         self.stairCoords = []
@@ -83,7 +70,7 @@ class Tower:
         startX = app.width - (self.stairWidth * 5) - 75
         for x in range(startX, app.width - self.stairWidth, self.stairWidth):
             self.stairCoords.append((x, y))
-            app.coordsOfObjectsFloor0.append([x, y, self.stairWidth,
+            app.stairCoordsFloor0.append([x, y, self.stairWidth,
                                                  self.stairHeight])
             y -= self.stairHeight
         for i in range(len(self.stairCoords)):
@@ -94,29 +81,13 @@ class Tower:
         drawRect(200, 300, 200, 150, fill = rgb(186, 205, 252))
         drawLabel('Move right to proceed', 300, 375)
 
-    # def loadStairColors(self):
-    #     colors = []
-    #     while len(colors) != len(self.colors):
-    #         newColor = (self.colors[random.randint(0, 4)])
-    #         if newColor not in colors:
-    #             colors.append(newColor)
-    #     return colors
-
     def changeCoord(self):
         if self.floor >= 1: #within tower
             self.modifiedX = self.x + app.mapX
             self.modifiedY = self.y + app.mapY
             for i in range(len(self.originalStepCoords)):
-                app.coordsOfObjectsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
-                app.coordsOfObjectsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
-            # for i in range(len(self.originalStepCoords), len(self.originalStepCoords) + 1):
-            #     app.coordsOfObjectsFloor1[i][0] = self.originalGroundCoords[i - len(self.originalStepCoords)] + app.mapX
-            #     app.coordsOfObjectsFloor1[i][1] = self.originalGroundCoords[i - len(self.originalStepCoords) + 1] + app.mapY
-            # for i in range(len(self.stepCoords)):
-            #     self.stepCoords[i][0] = self.originalStepCoords[i][0] + app.mapX
-            #     self.stepCoords[i][1] = self.originalStepCoords[i][1] + app.mapY
-            # app.coordsOfObjectsFloor1 = []
-            # app.coordsOfObjectsFloor1.extend(self.stepCoords)
+                app.stairCoordsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
+                app.stairCoordsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
     
     #checks if center of player is within door
     def atDoor(self, playerx, playery):
@@ -137,12 +108,11 @@ class Tower:
             self.doorWidth = self.towerWidth // 2
             self.doorHeight = self.towerHeight // 2
         elif self.floor == 1:
-            self.x = self.modifiedX = 100
+            self.x = self.modifiedX = 300
             self.y = self.modified = -app.height
             self.towerWidth = app.width * 2
             self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
-            # app.skyscraper.loadGround()
         elif self.floor == 2:
             pass
         elif self.floor == 3:
