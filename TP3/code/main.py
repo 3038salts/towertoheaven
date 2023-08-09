@@ -73,7 +73,7 @@ def onStep(app):
             app.stepsElapsed += 1
         if app.character.moving == False:
             app.character.spriteCount = 2
-        elif app.character.jumping == True:
+        if app.character.jumping == True:
             app.stepsElapsed = 0
             app.character.spriteCount = 0
         if app.stepsElapsed >= 6: # sprite updates every 6 frames
