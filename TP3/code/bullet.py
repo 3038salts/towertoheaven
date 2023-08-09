@@ -52,18 +52,12 @@ class Bullet:
             width = 32
             height = 16
             app.bulletList.append(Bullet(x, y, dx, dy, width, height))
-    
-    def spawnEnemyBullet(self):
-        pass
 
     def move(self):
         self.x += self.dx + app.dx
         self.y += self.dy
         self.modifiedX = self.x
         self.modifiedY = self.y
-    
-    def hit(self):
-        pass
 
     @staticmethod
     def distance(x1, y1, x2, y2):

@@ -10,8 +10,8 @@ class Tower:
         self.modifiedY = self.y
         self.towerWidth = 0
         self.towerHeight = 0
-        self.doorX = 0
-        self.doorY = 0
+        self.modifiedDoorX = self.doorX = 0
+        self.modifiedDoorY = self.doorY = 0
         self.doorWidth = 0
         self.doorHeight = 0
         self.colors = [rgb(186, 205, 252), rgb(252, 200, 186), # blue, red
@@ -21,22 +21,27 @@ class Tower:
         self.loadFloor()
     
     def drawTower(self):
-        if self.floor == 0: #before entering tower
-            #tower
+        if self.floor == 0: # before entering tower
+            # tower
             drawRect(self.x, self.y, self.towerWidth, self.towerHeight,
                      fill = 'gray', opacity = 80)
-            #door
-            drawRect(self.doorX, self.doorY, self.doorWidth, self.doorHeight,
-                     fill = 'brown')
-            #stairs
+            # stairs
             self.drawStartStairs()
+            # door
+            self.drawDoor()
         elif self.floor == 1: #in tower
             # tower in the back
             drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
                      self.towerHeight, fill = 'gray', opacity = 75)
-            self.draw1stFloorSign()
+            # self.draw1stFloorSign()
             # steps to ascend floor (not implemented yet)
             self.drawSteps()
+            # door
+            self.drawDoor()
+
+    def drawDoor(self):
+        drawRect(self.modifiedDoorX, self.modifiedDoorY, self.doorWidth, self.doorHeight,
+                     fill = 'brown')
 
     def drawSteps(self):
         for i in range(len(self.stepCoords)):
@@ -52,7 +57,7 @@ class Tower:
         dy = 200
         xRange = [1800, 2400]
         xChange = 100
-        for step in range(5):
+        for step in range(3):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)
             xChange += 100
             self.originalStepCoords.append([x, y, self.stepWidth,
@@ -85,14 +90,16 @@ class Tower:
         if self.floor >= 1: #within tower
             self.modifiedX = self.x + app.mapX
             self.modifiedY = self.y + app.mapY
+            self.modifiedDoorX = self.doorX + app.mapX
+            self.modifiedDoorY = self.doorY + app.mapY
             for i in range(len(self.originalStepCoords)):
                 app.stairCoordsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
                 app.stairCoordsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
-    
+
     #checks if center of player is within door
-    def atDoor(self, playerx, playery):
-        if (self.floor == 0 and self.doorX <= playerx <= self.doorX + self.doorWidth
-            and self.doorY <= playery <= self.doorY + self.doorHeight):
+    def atDoor(self, playerX, playerY):
+        if (self.modifiedDoorX <= playerX <= self.modifiedDoorX + self.doorWidth
+            and self.modifiedDoorY <= playerY <= self.modifiedDoorY + self.doorHeight):
             return True
         #add more cases for other floors
         return False
@@ -103,16 +110,18 @@ class Tower:
             self.towerWidth = app.width - 900
             self.towerHeight = app.height - 400
             #door
-            self.doorX = self.x + (self.towerWidth // 4)
-            self.doorY = self.y + self.towerHeight // 2
+            self.modifiedDoorX = self.doorX = self.x + (self.towerWidth // 4)
+            self.modifiedDoorY = self.doorY = self.y + self.towerHeight // 2 + 25
             self.doorWidth = self.towerWidth // 2
-            self.doorHeight = self.towerHeight // 2
+            self.doorHeight = self.towerHeight // 2 - 25
         elif self.floor == 1:
             self.x = self.modifiedX = 300
             self.y = self.modified = -app.height
             self.towerWidth = app.width * 2
             self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
+            self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
         elif self.floor == 2:
             pass
         elif self.floor == 3:

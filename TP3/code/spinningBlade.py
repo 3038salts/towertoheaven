@@ -2,7 +2,7 @@ from cmu_graphics import * # cmu graphics module
 from PIL import Image #
 import random
 class SpinningBlade():
-    lastX = 800
+    lastX = 300
     def __init__(self, x, y):
         self.modifiedX = self.x = x
         self.y = y
@@ -33,19 +33,44 @@ class SpinningBlade():
 
     def load(self):
         if app.skyscraper.floor == 1: #after entering
-            xChange = random.randrange(200, 400)
-            xRange = [SpinningBlade.lastX, SpinningBlade.lastX + xChange]
+            # print("lastX #1", SpinningBlade.lastX)
+            xChange = 800 #random.randrange(400, 800)
+            minSpace = 400
+            xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX + xChange]
+            # print(xRange)
             SpinningBlade.lastX = self.modifiedX = self.x = random.randrange(xRange[0], xRange[1])
             self.y = 800
             self.width = self.height = 445
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
+            # print("lastX #2", SpinningBlade.lastX)
 
     def move(self):
         self.modifiedX = self.x + app.mapX
     
     def touchingPlayer(self):
-        if (distance(self.modifiedX, self.y, app.character.x,
-                     app.character.y) <= self.r):
+        closestEdgeX, closestEdgeY = None, None
+        if self.modifiedX < app.character.x - app.character.width // 2:
+            closestEdgeX = app.character.x - app.character.width // 2
+            # print("X1")
+        elif self.modifiedX > app.character.x + app.character.width // 2:
+            closestEdgeX = app.character.x + app.character.width // 2
+            # print("X2")
+        else:
+            closestEdgeX = app.character.x
+        if self.y < app.character.y - app.character.height // 2:
+            closestEdgeY = app.character.y - app.character.height // 2
+            # print("Y1")
+        elif self.y > app.character.y + app.character.height // 2:
+            closestEdgeY = app.character.y + app.character.height // 2
+            # print("Y2")
+        else:
+            closestEdgeY = app.character.y
+        # print("THE Y", self.y)
+        # print("the top edge", app.character.y - app.character.height // 2)
+        # print("the bot edge", app.character.y + app.character.height // 2)
+        # print('CLOSE', closestEdgeX, closestEdgeY)
+        if (distance(self.modifiedX, self.y, closestEdgeX, closestEdgeY)
+            <= self.r):
             return True
         return False
 

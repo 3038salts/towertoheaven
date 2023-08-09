@@ -12,7 +12,7 @@ class Player:
         self.y = 0
         self.dx = 8
         self.dy = 0
-        self.d2y = 0.32 # gravitational acceleration
+        self.d2y = 1.1 # gravitational acceleration
         self.width = 0
         self.height = 0
         self.jumping = False
@@ -36,10 +36,11 @@ class Player:
         self.width, self.height = getImageSize(sprite)
         drawImage(sprite, self.x, self.y, width = self.width,
                   height = self.height, align='center')
+        self.drawPlayerStats()
     
     def drawPlayerStats(self):
-        drawRect()
-        drawLabel()
+        drawRect(75, 30, 150, 40, fill = rgb(25, 160, 195)) #brown
+        drawLabel(f'HP: {self.health}', 150, 50, size = 20, align = 'center')
 
     def colliding(self): # keeps player in tower and not inside other objects
         if self.x - (self.width // 2) < 0: # left bound for screen
@@ -100,6 +101,11 @@ class Player:
             self.dy += self.d2y
             if self.colliding():
                 self.dy -= self.d2y
+
+    def isDead(self):
+        if self.health <= 0:
+            return True
+        return False
 
     def load(self): #prob the same for each floor after start
         if app.skyscraper.floor == 0:

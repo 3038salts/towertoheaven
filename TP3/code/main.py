@@ -4,11 +4,14 @@ import tower, player, enemy, bullet, pit, spinningBlade # classes
 import random # modules
 def onAppStart(app):
     #----------------#
-    # window size, framerate, and pause
+    # window size, framerate, pause, game over, and general step counter
     app.width = 1200
     app.height = 800
     app.stepsPerSecond = 60
     app.paused = False
+    app.gameOver = False
+    app.generalStepCounter = 0 # used for animating saw blade
+    app.fadeIncrement= 0 # works in tandem with the var above
     # app.loading = False
     #-----------#
     # set coordinates of map
@@ -51,7 +54,6 @@ def onAppStart(app):
     # lists to keep track of them
     app.lavaList = []
     app.bladeList = []
-    app.generalStepCounter = 0 # used for animating blade right now
 
 def redrawAll(app):
     drawOutsideTowerBG(app)
@@ -65,12 +67,15 @@ def redrawAll(app):
             bullet.drawBullet()
         for saw in app.bladeList:
             saw.drawBlade()
-    # if app.loading == True:
+    if app.gameOver == True:
+        drawGameOver(app)
+    # if app.loading == Trued:
         # app.skyscraper.drawLoadingScreen()
 
 def drawOutsideTowerBG(app):
-    # background image source: https://www.vecteezy.com/vector-art/540991-
+    # background image sources: https://www.vecteezy.com/vector-art/540991-
     # cartoon-forest-seamless-background-elements-for-mobile-games
+    # https://wallup.net/drawing-cityscape-artwork-sky/
     # from Ray's cmu_graphics demos
     if app.skyscraper.floor <= 1:
         image = CMUImage(Image.open('../assets/forest.jpeg'))
@@ -79,8 +84,14 @@ def drawOutsideTowerBG(app):
     bgWidth, bgHeight = getImageSize(image)
     drawImage(image, 0, 0, width = bgWidth, height = bgHeight)
 
+def drawGameOver(app):
+    drawRect(0, 0, app.width, app.height, fill = 'black', opacity = app.fadeIncrement)
+    drawLabel("You died.", app.width / 2, 325, size = 50, bold = True,
+              fill = 'crimson', font = 'monospace')
+
 def onStep(app):
-    if app.paused == False:
+    app.generalStepCounter += 1
+    if app.paused == False and app.gameOver == False:
         if app.character.jumping == False and app.character.moving == True:
             app.stepsElapsed += 1
         if app.character.moving == False:
@@ -94,7 +105,7 @@ def onStep(app):
             app.stepsElapsed = 0
         app.character.y += app.character.dy # modifies player y position
         app.character.jump() # enforces gravity
-        app.skyscraper.changeCoord() # updates coordinates of tower and objects
+        # app.skyscraper.changeCoord() # updates coordinates of tower and objects
         if app.skyscraper.floor == 1:
             app.stepsOccurred += 1
             if (len(app.enemyList) < 3 and app.stepsOccurred > app.interval
@@ -122,23 +133,28 @@ def onStep(app):
                     app.bulletList[index].move()
                     index += 1
             index = 0 # reset index at the end
-            app.generalStepCounter += 1
             for saw in app.bladeList:
-                if app.generalStepCounter >= 6: # sprite updates every 6 frames
+                if saw.touchingPlayer() and app.generalStepCounter % 15 == 0:
+                    app.character.health -= 10
+                if app.generalStepCounter % 2 == 0: # updates every 2 frames
                     saw.spriteCount = ((saw.spriteCount + 1)
                                      % len(saw.spriteList))
-                    app.generalStepCounter = 0
                 saw.move()
+            if app.generalStepCounter > 18000:
+                app.generalStepCounter = 0
             if app.startCountingShots == True:
                 app.stepsPassed += 1
             if app.stepsPassed > 1200: # prevent memory from dying
                 app.stepsPassed = 0
             app.dx = 0 # reset dx in case player isn't moving
-            # app.character.isHit()
+            if app.character.isDead():
+                app.gameOver = True
             # app.bullet.isHit()
+    if app.gameOver == True and app.fadeIncrement < 100:
+        app.fadeIncrement += 1
 
 def onKeyHold(app, keys):
-    if app.paused == False:
+    if app.paused == False and app.gameOver == False:
         if app.skyscraper.floor == 0:
             if 'd' in keys and 'a' not in keys:
                 app.character.moving = True
@@ -179,26 +195,28 @@ def onKeyRelease(app, key):
         app.character.moving = False
     
 def onKeyPress(app, key):
-    if app.paused == False:
+    if app.paused == False and app.gameOver == False:
         if (key == 'w' and app.character.jumping == False and
             not app.character.colliding()):
-            app.character.dy = -12
+            app.character.dy = -25
             app.character.jumping = True
         elif (key == 's' and app.skyscraper.floor < 3 and # to enter door
             app.skyscraper.atDoor(app.character.x, app.character.y)):
-            app.skyscraper.floor = 1
+            print(app.skyscraper.floor)
+            app.skyscraper.floor += 1
             app.character.load()
             app.skyscraper.loadFloor()
-            app.blade.load()
+            for i in range(3):
+                app.blade.load()
             # app.loading = True
         elif key == 'j' and app.skyscraper.floor >= 1:
             app.startCountingShots = True
             if app.stepsPassed >= app.attackSpeed:
                 app.bullet.spawnPlayerBullet()
                 app.stepsPassed = 0
-    if key == 'p' and app.paused == False:
+    if key == 'p' and app.paused == False and app.gameOver == False:
         app.paused = True
-    elif key == 'p' and app.paused == True:
+    elif key == 'p' and app.paused == True and app.gameOver == False:
         app.paused = False
 
 def onMousePress(app, mouseX, mouseY): # for debugging rn, later for selection
