@@ -2,9 +2,7 @@ from cmu_graphics import *
 import random
 class Bullet:
     def __init__(self, x, y, dx, dy, width, height):
-        self.modifiedX = self.x = x #when spawned, should appear to the right or left of player
-        #we can choose this depending on direction the player is walking,
-        #where the enemy is facing, or mouseX, mouseY
+        self.modifiedX = self.x = x
         self.modifiedY = self.y = y
         self.dx = dx
         self.dy = dy
