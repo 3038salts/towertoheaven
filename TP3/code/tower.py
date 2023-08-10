@@ -2,7 +2,7 @@ from cmu_graphics import *
 import random, copy
 class Tower:
     def __init__(self):
-        self.floor = 0
+        self.floor = -1
         # self.totalFloors = 3
         self.x = 900
         self.y = 0
@@ -33,7 +33,7 @@ class Tower:
             self.drawSteps() # steps
             self.drawDoor() # door
         elif self.floor == 4:
-            pass # meet god
+            drawLabel('You beat the game!', app.width // 2, app.height // 2, size = 40)
 
     def drawDoor(self):
         drawRect(self.modifiedDoorX, self.modifiedDoorY, self.doorWidth, self.doorHeight,
@@ -47,17 +47,17 @@ class Tower:
 
     def loadStepCoords(self):
         if self.floor == 1:
-            xRange = [2000, 2600]
+            xRange = [2000, 2500]
         elif self.floor == 2:
-            xRange = [4300, 5000]
+            xRange = [4200, 4900]
         elif self.floor == 3:
-            xRange = [9200, 9800]
+            xRange = [9000, 9600]
         self.originalStepCoords = []
         self.stepHeight = 60
         self.stepWidth = 150
         y = 600
         dy = random.randint(180, 200)
-        xChange = 100
+        xChange = 120
         for step in range(3):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)
             for index in self.originalStepCoords:

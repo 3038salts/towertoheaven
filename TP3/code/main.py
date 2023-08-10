@@ -57,10 +57,11 @@ def onAppStart(app):
 
 def redrawAll(app):
     drawOutsideTowerBG(app)
-    # if app.loading == False:
-    app.skyscraper.drawTower()
-    app.character.drawPlayer()
-    if app.skyscraper.floor >= 1:
+    drawStart(app)
+    if 0 <= app.skyscraper.floor <= 3:
+        app.skyscraper.drawTower()
+        app.character.drawPlayer()
+    if 1 <= app.skyscraper.floor <= 3:
         for enemy in app.enemyList:
             enemy.drawEnemy()
         for bullet in app.bulletList:
@@ -71,6 +72,9 @@ def redrawAll(app):
         drawGameOver(app)
     # if app.loading == Trued:
         # app.skyscraper.drawLoadingScreen()
+
+def drawStart(app):
+    drawLabel("Tower To Heaven", app.width // 2, app.height // 2 - 200, size = 100)
 
 def drawOutsideTowerBG(app):
     # background image sources: https://www.vecteezy.com/vector-art/540991-
@@ -112,7 +116,7 @@ def onStep(app):
         app.character.y += app.character.dy # modifies player y position
         app.character.jump() # enforces gravity
         # app.skyscraper.changeCoord() # updates coordinates of tower and objects
-        if app.skyscraper.floor >= 1:
+        if 1 <= app.skyscraper.floor <= 3:
             app.stepsOccurred += 1
             if (len(app.enemyList) < 3 and app.stepsOccurred > app.interval
                 and app.enemySpawnCount < 5): # spawns a ghost every so often
@@ -164,7 +168,7 @@ def onStep(app):
 
 def onKeyHold(app, keys):
     if app.paused == False and app.gameOver == False:
-        if app.skyscraper.floor == 0:
+        if app.skyscraper.floor == 0 or app.skyscraper.floor == 4:
             if 'd' in keys and 'a' not in keys:
                 app.character.moving = True
                 # character moves right
@@ -179,7 +183,7 @@ def onKeyHold(app, keys):
                 while app.character.colliding():
                     # makes sure player doesn't go into object or out of bounds
                     app.character.x += 1
-        elif app.skyscraper.floor >= 1:
+        elif 1 <= app.skyscraper.floor <= 3:
             if 'd' in keys and 'a' not in keys:
                 app.character.moving = True
                 # map moves left to make it appear as if player moves right
@@ -224,7 +228,7 @@ def onKeyPress(app, key):
                 spinningBlade.SpinningBlade.floatingLastX = 300
                 numberOfBlades = 0
                 if app.skyscraper.floor == 1:
-                    numberOfBlades = 4
+                    numberOfBlades = 3
                 elif app.skyscraper.floor == 2: # maybe do 3 squared
                     numberOfBlades = 8
                 elif app.skyscraper.floor == 3:
