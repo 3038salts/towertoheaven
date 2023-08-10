@@ -1,0 +1,67 @@
+Name:
+    Tower to Heaven
+
+Description:
+    In this game, you start out as a cute cat in a forest. One day, you
+    encounter a tower and open the door. As you ascend the tower, you will fight
+    ghosts and avoid spinning blades. You have the mytical abiity to shoot
+    bullets. When you reach the top of the tower, you'll be in heaven!
+
+Similar projects:
+    Luigi's Mansion: This game is centered around a mansion where Luigi has
+    certain tools  he uses to get through the game until he eventually finds
+    Mario. There are enemies in the game, and I want to incorporate those
+    weapons and enemies into my game as well. I like how there are several rooms
+    on each floor, and I would like to implement that. But I don't want to make
+    3D graphics, as that will make it more complicated than I would like to,
+    and the end goal is different.
+
+    Tower of Heaven: I just recently saw this game, and I think my game will
+    probably take the most inspiration from its design and development. This
+    game is centered around a tower. The player enters the tower, and God
+    creates a book of laws the player has to follow. I will implement something
+    similar to that as well. I want to include colors, have a more flashy
+    design, and code different levels that aren't hard-coded.
+
+    2D Mario: The game can be similar to this as there are enemies in a game
+    and the map is 2D like the game I plan to make. However, my enemies will be
+    smarter and there will be different puzzles too. I probably will make each
+    floor progress from left to right like how Mario does it for each level.
+
+Structural plan:
+    I will have classes for the bullets, buttons, obstacles, player, enemies,
+    andthe tower. The complex algorithms for each level will be placed into each
+    respective class for ease of use and organization. Assets will be stored in
+    a separate folder from the code to keep everything clean. I plan to have 3
+    floors which will be separated from each other through if conditionals.
+
+Algorithmic plan:
+    There will be function that randomly generate the location where the enemy
+    spawns, with each floor having a set difficulty. The obstacles will also
+    have randomly generated spacing. Since I want the view of the player to be a
+    continuous scroll, the map will move accordingly in the other direction.
+    The background will also be changed to show how high the player has gotten
+    in relation to Earth.
+
+Timeline plan:
+    I plan to implement the player by the end of Wednesday, most of the tower
+    without enemies by Friday, the tower portion by Saturday and the most
+    complex algorithms by the end of Sunday. Then, I will add in the enemies
+    and refine the project. 
+
+Version control:
+    I have already made a private GitHub repository and will make it public
+    after I'm finished creating my term project. I have GitHub Desktop installed
+    and will use it to periodically back up my code.
+
+Module list:
+    None
+
+TP1 Update:
+    None
+
+TP2 Update:
+    None
+
+TP3 Update:
+    Changed description, structural plan, 
