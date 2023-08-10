@@ -64,4 +64,5 @@ TP2 Update:
     None
 
 TP3 Update:
-    Changed description, structural plan, 
+    Changed description, similar projects, structural plan, algorithmic plan,
+    and timeline plan.
