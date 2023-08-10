@@ -1,11 +1,7 @@
 from cmu_graphics import *
 from PIL import Image
-'''image source: https://www.freepik.com/free-vector/hand-drawn-animation-
-frames-element-collection_33591464.htm#query=sprite%20sheets&position=2&from_
-view=keyword&track=ais)'''
 class Player:
     def __init__(self):
-        # self.spriteImage = None
         self.spriteList = None
         self.spriteCount = 0
         self.x = 0
@@ -39,8 +35,9 @@ class Player:
         self.drawPlayerStats()
     
     def drawPlayerStats(self):
-        drawRect(10, 30, 170, 40, fill = rgb(25, 160, 195)) #brown
-        drawLabel(f'HP: {self.health} Floor: {app.skyscraper.floor}', 95, 50, size = 20, align = 'center')
+        drawRect(10, 30, 170, 40, fill = rgb(25, 160, 195)) # brown
+        drawLabel(f'HP: {self.health} Floor: {app.skyscraper.floor}', 95, 50,
+                  size = 20, align = 'center')
 
     def colliding(self): # keeps player in tower and not inside other objects
         if self.x - (self.width // 2) < 0: # left bound for screen
