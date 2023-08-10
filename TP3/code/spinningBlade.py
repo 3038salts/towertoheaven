@@ -17,17 +17,18 @@ class SpinningBlade():
     def drawBlade(self):
         sprite = self.spriteList[self.spriteCount]
         self.width, self.height = getImageSize(sprite)
-        self.r = self.height // 2 # circular hitbox for a square image
+        self.r = self.height // 2 # circular hitbox
         drawImage(sprite, self.modifiedX, self.y, width = self.width,
                   height = self.height, align = 'center')
 
     def getSprites(self): # from Ray's cmu_graphics demos
-        # image source: https://giphy.com/gifs/kays-kaysbetongsaging-betongsaging-lpw5Rnl86VNz0ZkGHl
+        # image source: https://giphy.com/gifs/kays-kaysbetongsaging-betong
+        # saging-lpw5Rnl86VNz0ZkGHl
         file = Image.open('../assets/blade.gif')
         self.spriteList = []
         for frame in range(file.n_frames): # for every frame index
             file.seek(frame) # seek to the frame
-            fr = file.resize((file.size[0] // 2, file.size[1] // 2)) # width, height
+            fr = file.resize((file.size[0] // 2, file.size[1] // 2))
             fr = fr.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
             fr = CMUImage(fr)
             self.spriteList.append(fr)
@@ -37,20 +38,22 @@ class SpinningBlade():
         self.width = self.height = 445
         if app.skyscraper.floor <= 3:
             xChange = random.randrange(0, 400)
-            # print("what the heck", SpinningBlade.lastX)
-            xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX + minSpace + xChange]
-            # print(xRange)
-            SpinningBlade.lastX = self.modifiedX = self.x = random.randrange(xRange[0], xRange[1])
+            xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX +
+                      minSpace + xChange]
+            self.x = random.randrange(xRange[0], xRange[1])
+            SpinningBlade.lastX = self.modifiedX = self.x
             self.y = 800
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
         if 2 <= app.skyscraper.floor <= 3:
             xChange = random.randrange(20, 250)
             xFloatingChange = random.randrange(20, 200)
-            xFloatingRange = [SpinningBlade.floatingLastX + minSpace, SpinningBlade.floatingLastX + minSpace + xFloatingChange]
-            SpinningBlade.floatingLastX = self.modifiedX = self.x = random.randrange(xFloatingRange[0], xFloatingRange[1])
+            first = SpinningBlade.floatingLastX + minSpace
+            second = SpinningBlade.floatingLastX + minSpace + xFloatingChange
+            xFloatingRange = [first, second]
+            self.x = random.randrange(xFloatingRange[0], xFloatingRange[1])
+            SpinningBlade.floatingLastX = self.modifiedX = self.x
             self.y = random.randint(320, 385)
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
-        # print("lastX #2", SpinningBlade.lastX)
 
     def move(self):
         self.modifiedX = self.x + app.mapX
@@ -59,24 +62,16 @@ class SpinningBlade():
         closestEdgeX, closestEdgeY = None, None
         if self.modifiedX < app.character.x - app.character.width // 2:
             closestEdgeX = app.character.x - app.character.width // 2
-            # print("X1")
         elif self.modifiedX > app.character.x + app.character.width // 2:
             closestEdgeX = app.character.x + app.character.width // 2
-            # print("X2")
         else:
             closestEdgeX = app.character.x
         if self.y < app.character.y - app.character.height // 2:
             closestEdgeY = app.character.y - app.character.height // 2
-            # print("Y1")
         elif self.y > app.character.y + app.character.height // 2:
             closestEdgeY = app.character.y + app.character.height // 2
-            # print("Y2")
         else:
             closestEdgeY = app.character.y
-        # print("THE Y", self.y)
-        # print("the top edge", app.character.y - app.character.height // 2)
-        # print("the bot edge", app.character.y + app.character.height // 2)
-        # print('CLOSE', closestEdgeX, closestEdgeY)
         if (distance(self.modifiedX, self.y, closestEdgeX, closestEdgeY)
             <= self.r):
             return True

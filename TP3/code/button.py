@@ -8,5 +8,7 @@ class Button:
         self.text = text
     
     def drawButton(self):
-        drawRect(self.x, self.y, self.width, self.height, fill = rgb(252, 200, 186))
-        drawLabel(self.text, self.x + self.width // 2, self.y + self.height // 2, size = 30)
+        drawRect(self.x, self.y, self.width, self.height, fill =
+                 rgb(252, 200, 186))
+        drawLabel(self.text, self.x + self.width // 2, self.y +
+                  self.height // 2, size = 30)
