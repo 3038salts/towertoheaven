@@ -223,6 +223,7 @@ def onKeyPress(app, key):
                 app.character.load()
                 app.skyscraper.loadFloor()
                 app.bladeList = [] # reset for each floor
+                app.enemySpawnCount = 0
                 spinningBlade.SpinningBlade.lastX = 300
                 spinningBlade.SpinningBlade.floatingLastX = 300
                 numberOfBlades = 0
