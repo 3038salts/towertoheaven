@@ -3,7 +3,7 @@ import random, copy
 class Tower:
     def __init__(self):
         self.floor = 0
-        self.totalFloors = 3
+        # self.totalFloors = 3
         self.x = 900
         self.y = 0
         self.modifiedX = self.x
@@ -26,20 +26,12 @@ class Tower:
                      fill = 'gray', opacity = 75) # tower
             self.drawStartStairs() # stairs
             self.drawDoor() # door
-        elif self.floor == 1:
+        elif 1 <= self.floor <= 3:
             drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
                      self.towerHeight, fill = 'gray', opacity = 70) # tower
-            # self.draw1stFloorSign()
+            self.drawFloorSign()
             self.drawSteps() # steps
             self.drawDoor() # door
-        elif self.floor == 2:
-            # tower
-            drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
-                     self.towerHeight, fill = 'gray', opacity = 70)
-            self.drawSteps() # steps
-            self.drawDoor() # door
-        elif self.floor == 3:
-            pass
         elif self.floor == 4:
             pass # meet god
 
@@ -59,12 +51,12 @@ class Tower:
         elif self.floor == 2:
             xRange = [4300, 5000]
         elif self.floor == 3:
-            pass
+            xRange = [9200, 9800]
         self.originalStepCoords = []
         self.stepHeight = 60
         self.stepWidth = 150
         y = 600
-        dy = random.randint(150, 200)
+        dy = random.randint(180, 200)
         xChange = 100
         for step in range(3):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)
@@ -94,12 +86,12 @@ class Tower:
             drawRect(self.stairCoords[i][0], self.stairCoords[i][1],
                      self.stairWidth, self.stairHeight, fill = self.colors[i])
 
-    def draw1stFloorSign(self):
-        drawRect(200, 300, 200, 150, fill = rgb(186, 205, 252))
-        drawLabel('Move right to proceed', 300, 375)
+    def drawFloorSign(self):
+        drawRect(400 + app.mapX, 300 + app.mapY, 200, 150, fill = rgb(186, 205, 252))
+        drawLabel('Move right to proceed', 500 + app.mapX, 375 + app.mapY, size = 20)
 
     def changeCoord(self):
-        if self.floor >= 1: #within tower
+        if 1 <= self.floor <= 3: #within tower
             self.modifiedX = self.x + app.mapX
             self.modifiedY = self.y + app.mapY
             self.modifiedDoorX = self.doorX + app.mapX
@@ -142,7 +134,13 @@ class Tower:
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
             self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
         elif self.floor == 3:
-            pass
+            self.x = self.modifiedX = 300
+            self.y = self.modified = 0
+            self.towerWidth = app.width * 8
+            self.towerHeight = app.height * 8
+            app.skyscraper.loadStepCoords()
+            self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
         elif self.floor == 4: #in heaven
             pass
     

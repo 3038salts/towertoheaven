@@ -43,12 +43,12 @@ class SpinningBlade():
             SpinningBlade.lastX = self.modifiedX = self.x = random.randrange(xRange[0], xRange[1])
             self.y = 800
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
-        if app.skyscraper.floor >= 2:
+        if 2 <= app.skyscraper.floor <= 3:
             xChange = random.randrange(20, 250)
             xFloatingChange = random.randrange(20, 200)
             xFloatingRange = [SpinningBlade.floatingLastX + minSpace, SpinningBlade.floatingLastX + minSpace + xFloatingChange]
             SpinningBlade.floatingLastX = self.modifiedX = self.x = random.randrange(xFloatingRange[0], xFloatingRange[1])
-            self.y = random.randint(340, 450)
+            self.y = random.randint(320, 385)
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
         # print("lastX #2", SpinningBlade.lastX)
 

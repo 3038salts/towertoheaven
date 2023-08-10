@@ -30,8 +30,8 @@ class Bullet:
         closestEnemy = None
         if len(app.enemyList) != 0:
             for enemy in app.enemyList:
-                gap = distance(app.character.x, app.character.y, app.enemy.modifiedX,
-                                    app.enemy.modifiedY)
+                gap = distance(app.character.x, app.character.y, enemy.modifiedX,
+                                    enemy.modifiedY)
                 if closestEnemyDistance == None or gap < closestEnemyDistance:
                     closestEnemyDistance = gap
                     closestEnemy = enemy

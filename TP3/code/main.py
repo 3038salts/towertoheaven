@@ -18,8 +18,8 @@ def onAppStart(app):
     app.mapX = 0
     app.mapY = 0
     app.dx = 0 # map moves, not player after floor 0
-    app.dxLeft = 9
-    app.dxRight = -9
+    app.dxLeft = 100
+    app.dxRight = -100
     # keep track of stair coordinates
     app.stairCoordsFloor0 = []
     app.stairCoordsFloor1 = []
@@ -140,7 +140,7 @@ def onStep(app):
             index = 0 # reset index at the end
             for saw in app.bladeList:
                 if saw.touchingPlayer() and app.generalStepCounter % 15 == 0:
-                    app.character.health -= 10
+                    app.character.health -= 100
                 if app.generalStepCounter % 2 == 0: # updates every 2 frames
                     saw.spriteCount = ((saw.spriteCount + 1)
                                      % len(saw.spriteList))
@@ -209,7 +209,7 @@ def onKeyPress(app, key):
             not app.character.colliding()):
             app.character.dy = -18
             app.character.jumping = True
-        elif (key == 's' and app.skyscraper.floor < 3 and # to enter door
+        elif (key == 's' and app.skyscraper.floor <= 3 and # to enter door
             app.skyscraper.atDoor(app.character.x, app.character.y)):
             # print(app.enemySpawnCount, app.enemyList)
             if (app.skyscraper.floor == 0 or (app.skyscraper.floor > 0 and
@@ -221,17 +221,18 @@ def onKeyPress(app, key):
                 app.skyscraper.loadFloor()
                 app.bladeList = [] # reset for each floor
                 spinningBlade.SpinningBlade.lastX = 300
+                spinningBlade.SpinningBlade.floatingLastX = 300
                 numberOfBlades = 0
                 if app.skyscraper.floor == 1:
-                    numberOfBlades = 3
+                    numberOfBlades = 4
                 elif app.skyscraper.floor == 2: # maybe do 3 squared
-                    numberOfBlades = 9
+                    numberOfBlades = 8
                 elif app.skyscraper.floor == 3:
-                    numberOfBlades == 12
+                    numberOfBlades = 19
                 for i in range(numberOfBlades):
                     app.blade.load()
                 # app.loading = True
-        elif key == 'j' and app.skyscraper.floor >= 1:
+        elif key == 'j' and 1 <= app.skyscraper.floor <= 3:
             app.startCountingShots = True
             if app.stepsPassed >= app.attackSpeed:
                 app.bullet.spawnPlayerBullet()

@@ -10,7 +10,7 @@ class Player:
         self.spriteCount = 0
         self.x = 0
         self.y = 0
-        self.dx = 8
+        self.dx = 10
         self.dy = 0
         self.d2y = 0.8 # gravitational acceleration
         self.width = 0
@@ -39,8 +39,8 @@ class Player:
         self.drawPlayerStats()
     
     def drawPlayerStats(self):
-        drawRect(10, 30, 160, 40, fill = rgb(25, 160, 195)) #brown
-        drawLabel(f'HP: {self.health} Floor: {app.skyscraper.floor}', 90, 50, size = 20, align = 'center')
+        drawRect(10, 30, 170, 40, fill = rgb(25, 160, 195)) #brown
+        drawLabel(f'HP: {self.health} Floor: {app.skyscraper.floor}', 95, 50, size = 20, align = 'center')
 
     def colliding(self): # keeps player in tower and not inside other objects
         if self.x - (self.width // 2) < 0: # left bound for screen
@@ -61,7 +61,7 @@ class Player:
                     #player bottom over top
                     return True
             return False
-        elif app.skyscraper.floor >= 1: #for the tower bounds
+        elif 1 <= app.skyscraper.floor <= 3: #for the tower bounds
             if app.skyscraper.modifiedX > self.x - (self.width // 2):
                 # left bound
                 return True
