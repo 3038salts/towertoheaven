@@ -57,7 +57,6 @@ def redrawAll(app):
     drawOutsideTowerBG(app)
     if app.skyscraper.floor == -1:
         drawStart(app)
-    # if 0 <= app.skyscraper.floor <= 3:
     app.skyscraper.drawTower()
     if 1 <= app.skyscraper.floor <= 3:
         for enemy in app.enemyList:

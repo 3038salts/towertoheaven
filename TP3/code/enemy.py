@@ -36,9 +36,9 @@ class Enemy:
         if app.skyscraper.floor == 1:
             xRange = [800, 2560]
         elif app.skyscraper.floor == 2:
-            xRange = [800, 5120]
+            xRange = [800, 4890]
         elif app.skyscraper.floor == 3:
-            xRange = [800, 10240]
+            xRange = [800, 5300]
         yRange = [200, 600]
         newEnemyX = random.randint(xRange[0], xRange[1])
         newEnemyY = random.randint(yRange[0], yRange[1])
