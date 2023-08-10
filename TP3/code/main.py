@@ -57,9 +57,8 @@ def redrawAll(app):
     drawOutsideTowerBG(app)
     if app.skyscraper.floor == -1:
         drawStart(app)
-    if 0 <= app.skyscraper.floor <= 3:
-        app.skyscraper.drawTower()
-        app.character.drawPlayer()
+    # if 0 <= app.skyscraper.floor <= 3:
+    app.skyscraper.drawTower()
     if 1 <= app.skyscraper.floor <= 3:
         for enemy in app.enemyList:
             enemy.drawEnemy()
@@ -67,6 +66,8 @@ def redrawAll(app):
             bullet.drawBullet()
         for saw in app.bladeList:
             saw.drawBlade()
+    if app.skyscraper.floor >= 0:
+        app.character.drawPlayer()
     if app.gameOver == True:
         drawGameOver(app)
 

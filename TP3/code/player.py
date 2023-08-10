@@ -13,7 +13,7 @@ class Player:
         self.height = 0
         self.jumping = False
         self.moving = False
-        self.health = 15112
+        self.health = 112
         self.getSprites()
         self.load()
     
@@ -106,7 +106,6 @@ class Player:
         return False
 
     def isTouchingEnemy(self):
-        baseRemove = 50
         for enemy in app.enemyList:
             if (enemy.modifiedX + enemy.width // 2 > # enemy right over player left
                 self.x - self.width // 2
@@ -118,7 +117,7 @@ class Player:
                 and rounded(enemy.modifiedY + (enemy.height // 2)) >
                 self.y - self.width // 2):
                 # enemy bottom over player top
-                self.health -= baseRemove * 2 ** (app.skyscraper.floor - 1)
+                self.health -= 10
                 return True
         return False
 
