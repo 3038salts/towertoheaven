@@ -74,6 +74,8 @@ def drawStart(app):
     drawLabel("Tower To Heaven", app.width // 2, app.height // 2 - 200,
               size = 100, fill = rgb(186, 205, 252))
     app.button.drawButton()
+    drawLabel("Use WAD to move, S to enter the door, and J to shoot bullets.",
+              app.width // 2, app.height // 2 + 150, size = 20, fill = 'white')
 
 def drawOutsideTowerBG(app):
     # background image sources: https://www.vecteezy.com/vector-art/540991-
