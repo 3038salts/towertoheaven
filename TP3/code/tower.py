@@ -22,22 +22,26 @@ class Tower:
     
     def drawTower(self):
         if self.floor == 0: # before entering tower
-            # tower
             drawRect(self.x, self.y, self.towerWidth, self.towerHeight,
-                     fill = 'gray', opacity = 80)
-            # stairs
-            self.drawStartStairs()
-            # door
-            self.drawDoor()
-        elif self.floor == 1: #in tower
-            # tower in the back
+                     fill = 'gray', opacity = 75) # tower
+            self.drawStartStairs() # stairs
+            self.drawDoor() # door
+        elif self.floor == 1:
             drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
-                     self.towerHeight, fill = 'gray', opacity = 75)
+                     self.towerHeight, fill = 'gray', opacity = 70) # tower
             # self.draw1stFloorSign()
-            # steps to ascend floor (not implemented yet)
-            self.drawSteps()
-            # door
-            self.drawDoor()
+            self.drawSteps() # steps
+            self.drawDoor() # door
+        elif self.floor == 2:
+            # tower
+            drawRect(self.modifiedX, self.modifiedY, self.towerWidth,
+                     self.towerHeight, fill = 'gray', opacity = 70)
+            self.drawSteps() # steps
+            self.drawDoor() # door
+        elif self.floor == 3:
+            pass
+        elif self.floor == 4:
+            pass # meet god
 
     def drawDoor(self):
         drawRect(self.modifiedDoorX, self.modifiedDoorY, self.doorWidth, self.doorHeight,
@@ -50,15 +54,23 @@ class Tower:
                      self.stepHeight, fill = self.colors[i])
 
     def loadStepCoords(self):
+        if self.floor == 1:
+            xRange = [2000, 2600]
+        elif self.floor == 2:
+            xRange = [4300, 5000]
+        elif self.floor == 3:
+            pass
         self.originalStepCoords = []
         self.stepHeight = 60
         self.stepWidth = 150
-        y = 600
+        y = 550
         dy = 200
-        xRange = [1800, 2400]
         xChange = 100
         for step in range(3):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)
+            for index in self.originalStepCoords:
+                while x == index[0]:
+                    x = random.randrange(xRange[0] + xChange, xRange[1], 100)
             xChange += 100
             self.originalStepCoords.append([x, y, self.stepWidth,
                                             self.stepHeight])
@@ -101,7 +113,6 @@ class Tower:
         if (self.modifiedDoorX <= playerX <= self.modifiedDoorX + self.doorWidth
             and self.modifiedDoorY <= playerY <= self.modifiedDoorY + self.doorHeight):
             return True
-        #add more cases for other floors
         return False
 
     def loadFloor(self):
@@ -116,14 +127,20 @@ class Tower:
             self.doorHeight = self.towerHeight // 2 - 25
         elif self.floor == 1:
             self.x = self.modifiedX = 300
-            self.y = self.modified = -app.height
+            self.y = self.modified = 0
             self.towerWidth = app.width * 2
             self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
             self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
         elif self.floor == 2:
-            pass
+            self.x = self.modifiedX = 300
+            self.y = self.modified = 0
+            self.towerWidth = app.width * 4
+            self.towerHeight = app.height * 4
+            app.skyscraper.loadStepCoords()
+            self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
         elif self.floor == 3:
             pass
         elif self.floor == 4: #in heaven

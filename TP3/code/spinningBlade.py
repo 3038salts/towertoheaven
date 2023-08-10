@@ -34,9 +34,9 @@ class SpinningBlade():
     def load(self):
         if app.skyscraper.floor == 1: #after entering
             # print("lastX #1", SpinningBlade.lastX)
-            xChange = 800 #random.randrange(400, 800)
+            xChange = random.randrange(0, 300)
             minSpace = 400
-            xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX + xChange]
+            xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX + minSpace + xChange]
             # print(xRange)
             SpinningBlade.lastX = self.modifiedX = self.x = random.randrange(xRange[0], xRange[1])
             self.y = 800

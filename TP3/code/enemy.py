@@ -9,7 +9,7 @@ class Enemy:
         self.spriteCount = 0
         self.modifiedX = self.x = x
         self.modifiedY = self.y = y
-        self.dx = 8
+        self.dx = 0
         self.dy = 0
         self.width = 0
         self.height = 0
@@ -35,15 +35,17 @@ class Enemy:
     
     def spawn(self):
         if app.skyscraper.floor == 1:
-            newEnemyX = app.mapX + random.randint(1000, 1500)
-            newEnemyY = app.mapY + random.randint(200, 600)
-            i = 0
-            while self.isLegal(newEnemyX, newEnemyY) == False:
-                # print('hi', i)
-                # i += 1
-                # print(newEnemyX, newEnemyY)
-                newEnemyX = random.randint(100, 800)
-                newEnemyY = app.mapY + random.randint(200, 600)
+            xRange = [800, 2560]
+        elif app.skyscraper.floor == 2:
+            xRange = [800, 5120]
+        elif app.skyscraper.floor == 3:
+            pass
+        yRange = [200, 600]
+        newEnemyX = random.randint(xRange[0], xRange[1])
+        newEnemyY = random.randint(yRange[0], yRange[1])
+        while self.isLegal(newEnemyX, newEnemyY) == False:
+            newEnemyX = random.randint(xRange[0], xRange[1])
+            newEnemyY = random.randint(yRange[0], yRange[1])
         app.enemyList.append(Enemy(newEnemyX, newEnemyY))
     
     def isLegal(self, newEnemyX, newEnemyY):
@@ -55,7 +57,7 @@ class Enemy:
                 # ghost top over bottom 
                 and rounded(newEnemyY + (self.height // 2)) > y):
                 # ghost bottom over top
-                return True
+                return False
         if (newEnemyX + self.width // 2 > # ghost right over player left
             app.character.x - app.character.width // 2
             and newEnemyX - (self.width // 2) < # ghost left over player right
@@ -66,20 +68,20 @@ class Enemy:
             and rounded(newEnemyY + (self.height // 2)) >
             app.character.y - app.character.width // 2):
             # ghost bottom over player top
-            return True
-        return False
+            return False
+        return True
     
     def move(self): #move towards player
         if self.modifiedX > app.character.x:
-            self.dx = -2
+            self.dx = -4
         elif self.modifiedX < app.character.x:
-            self.dx = 2
+            self.dx = 4
         else:
             self.dx = 0
         if self.modifiedY > app.character.y:
-            self.dy = -2
+            self.dy = -4
         elif self.modifiedY < app.character.y:
-            self.dy = 2
+            self.dy = 4
         else:
             self.dy = 0
         self.x += self.dx
@@ -90,7 +92,6 @@ class Enemy:
     def isHit(self): # checks if ghost is hit by a bullet
         # automatically deletes bullet and depeletes the health of ghost
         for bullet in app.bulletList:
-            # bullet.dx, bullet.dy
             if (bullet.x + bullet.width // 2 > # bullet right over ghost left
                 self.modifiedX - self.width // 2
                 and bullet.x - (bullet.width // 2) < # bullet left over ghost right

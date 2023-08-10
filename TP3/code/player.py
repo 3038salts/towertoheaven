@@ -107,6 +107,23 @@ class Player:
             return True
         return False
 
+    def isTouchingEnemy(self):
+        for enemy in app.enemyList:
+            if (enemy.modifiedX + enemy.width // 2 > # enemy right over player left
+                self.x - self.width // 2
+                and enemy.modifiedX - (enemy.width // 2) < # enemy left over player right
+                self.x + self.width // 2
+                and rounded(enemy.modifiedY - (enemy.height // 2)) <
+                # enemy top over player bottom 
+                self.y + self.height // 2
+                and rounded(enemy.modifiedY + (enemy.height // 2)) >
+                self.y - self.width // 2):
+                # enemy bottom over player top
+                self.health -= 10
+                print("we are farmers")
+                return True
+        return False
+
     def load(self): #prob the same for each floor after start
         if app.skyscraper.floor == 0:
             self.x = 150

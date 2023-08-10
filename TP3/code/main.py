@@ -23,8 +23,8 @@ def onAppStart(app):
     # keep track of stair coordinates
     app.stairCoordsFloor0 = []
     app.stairCoordsFloor1 = []
-    app.stairCoordsFloor2 = []
-    app.stairCoordsFloor3 = []
+    # app.stairCoordsFloor2 = []
+    # app.stairCoordsFloor3 = []
     #-----------#
     # instantiate tower and player
     app.skyscraper = tower.Tower()
@@ -39,7 +39,7 @@ def onAppStart(app):
     app.enemyList = []
     app.bulletList = []
      # for spawning enemies at separate times, first time after 2 secs
-    app.stepsOccurred = 0
+    app.stepsOccurred = 120
     app.interval = 120
     # for limiting attack speed, 5 shots per second
     app.stepsPassed = 12
@@ -106,17 +106,16 @@ def onStep(app):
         app.character.y += app.character.dy # modifies player y position
         app.character.jump() # enforces gravity
         # app.skyscraper.changeCoord() # updates coordinates of tower and objects
-        if app.skyscraper.floor == 1:
+        if app.skyscraper.floor >= 1:
             app.stepsOccurred += 1
             if (len(app.enemyList) < 3 and app.stepsOccurred > app.interval
-                and app.enemySpawnCount <= 5): # spawns a ghost every so often
+                and app.enemySpawnCount < 5): # spawns a ghost every so often
                 app.stepsOccurred = 0 # resets time
-                app.interval = random.randint(420, 600)
+                app.interval = random.randint(180, 420)
                 app.enemy.spawn()
                 app.enemySpawnCount += 1
             index = 0
             while index < len(app.enemyList):
-                # print(f'HEALTH: {app.enemyList[index].health}')
                 app.enemyList[index].move()
                 app.enemyList[index].isHit() # automatically removes bullets that hit ghost
                 # and automatically depeletes health
@@ -140,6 +139,8 @@ def onStep(app):
                     saw.spriteCount = ((saw.spriteCount + 1)
                                      % len(saw.spriteList))
                 saw.move()
+            if app.generalStepCounter % 60 == 0:
+                app.character.isTouchingEnemy()
             if app.generalStepCounter > 18000:
                 app.generalStepCounter = 0
             if app.startCountingShots == True:
@@ -149,7 +150,7 @@ def onStep(app):
             app.dx = 0 # reset dx in case player isn't moving
             if app.character.isDead():
                 app.gameOver = True
-            # app.bullet.isHit()
+            print(app.enemySpawnCount, app.enemyList)
     if app.gameOver == True and app.fadeIncrement < 100:
         app.fadeIncrement += 1
 
@@ -198,17 +199,19 @@ def onKeyPress(app, key):
     if app.paused == False and app.gameOver == False:
         if (key == 'w' and app.character.jumping == False and
             not app.character.colliding()):
-            app.character.dy = -25
+            app.character.dy = -24
             app.character.jumping = True
         elif (key == 's' and app.skyscraper.floor < 3 and # to enter door
             app.skyscraper.atDoor(app.character.x, app.character.y)):
-            print(app.skyscraper.floor)
-            app.skyscraper.floor += 1
-            app.character.load()
-            app.skyscraper.loadFloor()
-            for i in range(3):
-                app.blade.load()
-            # app.loading = True
+            # print(app.enemySpawnCount, app.enemyList)
+            if (app.skyscraper.floor == 0 or (app.skyscraper.floor > 0 and
+                app.enemySpawnCount == 5 and app.enemyList == [])):
+                app.skyscraper.floor += 1
+                app.character.load()
+                app.skyscraper.loadFloor()
+                for i in range(app.skyscraper.floor * 3):
+                    app.blade.load()
+                # app.loading = True
         elif key == 'j' and app.skyscraper.floor >= 1:
             app.startCountingShots = True
             if app.stepsPassed >= app.attackSpeed:
@@ -224,5 +227,7 @@ def onMousePress(app, mouseX, mouseY): # for debugging rn, later for selection
 
 def main():
     runApp()
+
+main()
 
 main()
