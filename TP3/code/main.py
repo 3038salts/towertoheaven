@@ -82,7 +82,6 @@ def drawOutsideTowerBG(app):
     # cartoon-forest-seamless-background-elements-for-mobile-games
     # https://wallup.net/drawing-cityscape-artwork-sky/
     # http://getdrawings.com/get-drawing#simple-mountain-drawing-60.jpg
-
     # from Ray's cmu_graphics demos
     if app.skyscraper.floor <= 1:
         image = CMUImage(Image.open('../assets/forest.jpeg'))
