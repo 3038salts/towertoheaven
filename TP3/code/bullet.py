@@ -36,9 +36,9 @@ class Bullet:
                     closestEnemyDistance = gap
                     closestEnemy = enemy
             if closestEnemy.modifiedX > app.character.x: #enemy to the right
-                dx = 6
+                dx = 7
             elif closestEnemy.modifiedX < app.character.x: #enemy to the left
-                dx = -6
+                dx = -7
             else: #if the player doesn't evade the ghost for some reason
                 # method from https://docs.python.org/3/library/random.html
                 dx = random.choice([-4, 4])

@@ -12,12 +12,12 @@ class Player:
         self.y = 0
         self.dx = 8
         self.dy = 0
-        self.d2y = 1.1 # gravitational acceleration
+        self.d2y = 0.8 # gravitational acceleration
         self.width = 0
         self.height = 0
         self.jumping = False
         self.moving = False
-        self.health = 100
+        self.health = 15112
         self.getSprites()
         self.load()
     
@@ -39,8 +39,8 @@ class Player:
         self.drawPlayerStats()
     
     def drawPlayerStats(self):
-        drawRect(75, 30, 150, 40, fill = rgb(25, 160, 195)) #brown
-        drawLabel(f'HP: {self.health}', 150, 50, size = 20, align = 'center')
+        drawRect(10, 30, 160, 40, fill = rgb(25, 160, 195)) #brown
+        drawLabel(f'HP: {self.health} Floor: {app.skyscraper.floor}', 90, 50, size = 20, align = 'center')
 
     def colliding(self): # keeps player in tower and not inside other objects
         if self.x - (self.width // 2) < 0: # left bound for screen
@@ -104,10 +104,12 @@ class Player:
 
     def isDead(self):
         if self.health <= 0:
+            self.health = 0
             return True
         return False
 
     def isTouchingEnemy(self):
+        baseRemove = 50
         for enemy in app.enemyList:
             if (enemy.modifiedX + enemy.width // 2 > # enemy right over player left
                 self.x - self.width // 2
@@ -119,8 +121,7 @@ class Player:
                 and rounded(enemy.modifiedY + (enemy.height // 2)) >
                 self.y - self.width // 2):
                 # enemy bottom over player top
-                self.health -= 10
-                print("we are farmers")
+                self.health -= baseRemove * 2 ** (app.skyscraper.floor - 1)
                 return True
         return False
 

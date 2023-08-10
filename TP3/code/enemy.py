@@ -73,15 +73,15 @@ class Enemy:
     
     def move(self): #move towards player
         if self.modifiedX > app.character.x:
-            self.dx = -4
+            self.dx = -3 * (app.skyscraper.floor / 1.5)
         elif self.modifiedX < app.character.x:
-            self.dx = 4
+            self.dx = 3 * (app.skyscraper.floor / 1.5)
         else:
             self.dx = 0
         if self.modifiedY > app.character.y:
-            self.dy = -4
+            self.dy = -3 * (app.skyscraper.floor / 1.5)
         elif self.modifiedY < app.character.y:
-            self.dy = 4
+            self.dy = 3 * (app.skyscraper.floor / 1.5)
         else:
             self.dy = 0
         self.x += self.dx

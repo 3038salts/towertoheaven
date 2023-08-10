@@ -3,6 +3,7 @@ from PIL import Image #
 import random
 class SpinningBlade():
     lastX = 300
+    floatingLastX = 300
     def __init__(self, x, y):
         self.modifiedX = self.x = x
         self.y = y
@@ -32,17 +33,24 @@ class SpinningBlade():
             self.spriteList.append(fr)
 
     def load(self):
-        if app.skyscraper.floor == 1: #after entering
-            # print("lastX #1", SpinningBlade.lastX)
-            xChange = random.randrange(0, 300)
-            minSpace = 400
+        minSpace = 400
+        self.width = self.height = 445
+        if app.skyscraper.floor <= 3:
+            xChange = random.randrange(0, 400)
+            # print("what the heck", SpinningBlade.lastX)
             xRange = [SpinningBlade.lastX + minSpace, SpinningBlade.lastX + minSpace + xChange]
             # print(xRange)
             SpinningBlade.lastX = self.modifiedX = self.x = random.randrange(xRange[0], xRange[1])
             self.y = 800
-            self.width = self.height = 445
             app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
-            # print("lastX #2", SpinningBlade.lastX)
+        if app.skyscraper.floor >= 2:
+            xChange = random.randrange(20, 250)
+            xFloatingChange = random.randrange(20, 200)
+            xFloatingRange = [SpinningBlade.floatingLastX + minSpace, SpinningBlade.floatingLastX + minSpace + xFloatingChange]
+            SpinningBlade.floatingLastX = self.modifiedX = self.x = random.randrange(xFloatingRange[0], xFloatingRange[1])
+            self.y = random.randint(340, 450)
+            app.bladeList.append(SpinningBlade(self.modifiedX, self.y))
+        # print("lastX #2", SpinningBlade.lastX)
 
     def move(self):
         self.modifiedX = self.x + app.mapX

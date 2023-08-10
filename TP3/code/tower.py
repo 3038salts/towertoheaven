@@ -63,8 +63,8 @@ class Tower:
         self.originalStepCoords = []
         self.stepHeight = 60
         self.stepWidth = 150
-        y = 550
-        dy = 200
+        y = 600
+        dy = random.randint(150, 200)
         xChange = 100
         for step in range(3):
             x = random.randrange(xRange[0] + xChange, xRange[1], 100)

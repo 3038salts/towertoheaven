@@ -76,11 +76,17 @@ def drawOutsideTowerBG(app):
     # background image sources: https://www.vecteezy.com/vector-art/540991-
     # cartoon-forest-seamless-background-elements-for-mobile-games
     # https://wallup.net/drawing-cityscape-artwork-sky/
+    # http://getdrawings.com/get-drawing#simple-mountain-drawing-60.jpg
+
     # from Ray's cmu_graphics demos
     if app.skyscraper.floor <= 1:
         image = CMUImage(Image.open('../assets/forest.jpeg'))
     elif app.skyscraper.floor == 2:
         image = CMUImage(Image.open('../assets/skyline.jpeg'))
+    elif app.skyscraper.floor == 3:
+        image = CMUImage(Image.open('../assets/mountain.jpeg'))
+    elif app.skyscraper.floor == 4:
+        image = CMUImage(Image.open('../assets/clouds.jpeg'))
     bgWidth, bgHeight = getImageSize(image)
     drawImage(image, 0, 0, width = bgWidth, height = bgHeight)
 
@@ -139,7 +145,9 @@ def onStep(app):
                     saw.spriteCount = ((saw.spriteCount + 1)
                                      % len(saw.spriteList))
                 saw.move()
-            if app.generalStepCounter % 60 == 0:
+            if app.generalStepCounter % (60 // app.skyscraper.floor) == 0:
+                # increases difficulty by having the ghost damage the player
+                # more times per seconds
                 app.character.isTouchingEnemy()
             if app.generalStepCounter > 18000:
                 app.generalStepCounter = 0
@@ -150,7 +158,7 @@ def onStep(app):
             app.dx = 0 # reset dx in case player isn't moving
             if app.character.isDead():
                 app.gameOver = True
-            print(app.enemySpawnCount, app.enemyList)
+            # print(app.enemySpawnCount, app.enemyList)
     if app.gameOver == True and app.fadeIncrement < 100:
         app.fadeIncrement += 1
 
@@ -199,17 +207,28 @@ def onKeyPress(app, key):
     if app.paused == False and app.gameOver == False:
         if (key == 'w' and app.character.jumping == False and
             not app.character.colliding()):
-            app.character.dy = -24
+            app.character.dy = -18
             app.character.jumping = True
         elif (key == 's' and app.skyscraper.floor < 3 and # to enter door
             app.skyscraper.atDoor(app.character.x, app.character.y)):
             # print(app.enemySpawnCount, app.enemyList)
             if (app.skyscraper.floor == 0 or (app.skyscraper.floor > 0 and
-                app.enemySpawnCount == 5 and app.enemyList == [])):
+                app.enemySpawnCount <= 5)): #and app.enemyList == [])): # change enemy spawn count to == instead of <=
+                app.mapX = 0 # reset coords
+                app.mapY = 0
                 app.skyscraper.floor += 1
                 app.character.load()
                 app.skyscraper.loadFloor()
-                for i in range(app.skyscraper.floor * 3):
+                app.bladeList = [] # reset for each floor
+                spinningBlade.SpinningBlade.lastX = 300
+                numberOfBlades = 0
+                if app.skyscraper.floor == 1:
+                    numberOfBlades = 3
+                elif app.skyscraper.floor == 2: # maybe do 3 squared
+                    numberOfBlades = 9
+                elif app.skyscraper.floor == 3:
+                    numberOfBlades == 12
+                for i in range(numberOfBlades):
                     app.blade.load()
                 # app.loading = True
         elif key == 'j' and app.skyscraper.floor >= 1:
