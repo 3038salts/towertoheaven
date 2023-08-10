@@ -3,7 +3,6 @@ import random, copy
 class Tower:
     def __init__(self):
         self.floor = -1
-        # self.totalFloors = 3
         self.x = 900
         self.y = 0
         self.modifiedX = self.x
@@ -33,11 +32,12 @@ class Tower:
             self.drawSteps() # steps
             self.drawDoor() # door
         elif self.floor == 4:
-            drawLabel('You beat the game!', app.width // 2, app.height // 2, size = 40)
+            drawLabel('You beat the game!', app.width // 2, app.height // 2,
+                      size = 40)
 
     def drawDoor(self):
-        drawRect(self.modifiedDoorX, self.modifiedDoorY, self.doorWidth, self.doorHeight,
-                     fill = 'brown')
+        drawRect(self.modifiedDoorX, self.modifiedDoorY, self.doorWidth,
+                 self.doorHeight, fill = 'brown')
 
     def drawSteps(self):
         for i in range(len(self.stepCoords)):
@@ -72,7 +72,6 @@ class Tower:
 
     def drawStartStairs(self):
         self.stairCoords = []
-        # colors = self.loadStairColors()
         y = 720
         self.stairHeight = 80
         self.stairWidth = 150
@@ -87,8 +86,10 @@ class Tower:
                      self.stairWidth, self.stairHeight, fill = self.colors[i])
 
     def drawFloorSign(self):
-        drawRect(400 + app.mapX, 300 + app.mapY, 200, 150, fill = rgb(186, 205, 252))
-        drawLabel('Move right to proceed', 500 + app.mapX, 375 + app.mapY, size = 20)
+        drawRect(400 + app.mapX, 300 + app.mapY, 200, 150,
+                 fill = rgb(186, 205, 252))
+        drawLabel('Move right to proceed', 500 + app.mapX, 375 + app.mapY,
+                  size = 20)
 
     def changeCoord(self):
         if 1 <= self.floor <= 3: #within tower
@@ -97,13 +98,16 @@ class Tower:
             self.modifiedDoorX = self.doorX + app.mapX
             self.modifiedDoorY = self.doorY + app.mapY
             for i in range(len(self.originalStepCoords)):
-                app.stairCoordsFloor1[i][0] = self.originalStepCoords[i][0] + app.mapX
-                app.stairCoordsFloor1[i][1] = self.originalStepCoords[i][1] + app.mapY
+                temp0 = self.originalStepCoords[i][0] + app.mapX
+                temp1 = self.originalStepCoords[i][1] + app.mapY
+                app.stairCoordsFloor1[i][0] = temp0
+                app.stairCoordsFloor1[i][1] = temp1
 
     #checks if center of player is within door
     def atDoor(self, playerX, playerY):
         if (self.modifiedDoorX <= playerX <= self.modifiedDoorX + self.doorWidth
-            and self.modifiedDoorY <= playerY <= self.modifiedDoorY + self.doorHeight):
+            and self.modifiedDoorY <= playerY <= self.modifiedDoorY +
+            self.doorHeight):
             return True
         return False
 
@@ -114,7 +118,7 @@ class Tower:
             self.towerHeight = app.height - 400
             #door
             self.modifiedDoorX = self.doorX = self.x + (self.towerWidth // 4)
-            self.modifiedDoorY = self.doorY = self.y + self.towerHeight // 2 + 25
+            self.modifiedDoorY = self.doorY = self.y + self.towerHeight // 2 +25
             self.doorWidth = self.towerWidth // 2
             self.doorHeight = self.towerHeight // 2 - 25
         elif self.floor == 1:
@@ -124,7 +128,7 @@ class Tower:
             self.towerHeight = app.height * 2
             app.skyscraper.loadStepCoords()
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
-            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1]-175
         elif self.floor == 2:
             self.x = self.modifiedX = 300
             self.y = self.modified = 0
@@ -132,7 +136,7 @@ class Tower:
             self.towerHeight = app.height * 4
             app.skyscraper.loadStepCoords()
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
-            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1]-175
         elif self.floor == 3:
             self.x = self.modifiedX = 300
             self.y = self.modified = 0
@@ -140,9 +144,6 @@ class Tower:
             self.towerHeight = app.height * 8
             app.skyscraper.loadStepCoords()
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
-            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1] - 175
+            self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1]-175
         elif self.floor == 4: #in heaven
             pass
-    
-    # def drawLoadingScreen(self):
-    #     drawRect(0, 0, app.width, app.height, fill = 'black', opacity = 100)
