@@ -21,7 +21,6 @@ class Enemy:
         self.spriteImage = Image.open(file)
         self.spriteList = []
         for i in range(1):
-            #temporary sprite
             sprite = CMUImage(self.spriteImage.crop((0, 0, 1247, 1280)))
             self.spriteList.append(sprite)
         spriteWidth, spriteHeight = getImageSize(sprite)
@@ -94,7 +93,7 @@ class Enemy:
         for bullet in app.bulletList:
             if (bullet.x + bullet.width // 2 > # bullet right over ghost left
                 self.modifiedX - self.width // 2
-                and bullet.x - (bullet.width // 2) < # bullet left over ghost right
+                and bullet.x - (bullet.width // 2) < # bullet L over ghost R
                 self.modifiedX + self.width // 2
                 and rounded(bullet.y - (bullet.height // 2)) <
                 # bullet top over ghost bottom 
