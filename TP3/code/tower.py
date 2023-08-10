@@ -32,7 +32,7 @@ class Tower:
             self.drawSteps() # steps
             self.drawDoor() # door
         elif self.floor == 4:
-            drawLabel('You beat the game!', app.width // 2, app.height // 2,
+            drawLabel("You're in heaven!", app.width // 2, app.height // 2,
                       size = 40)
 
     def drawDoor(self):
@@ -145,5 +145,3 @@ class Tower:
             app.skyscraper.loadStepCoords()
             self.modifiedDoorX = self.doorX = self.originalStepCoords[-1][0]
             self.modifiedDoorY = self.doorY = self.originalStepCoords[-1][1]-175
-        elif self.floor == 4: #in heaven
-            pass
