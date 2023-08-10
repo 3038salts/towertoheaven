@@ -1,6 +1,6 @@
 from cmu_graphics import * # cmu graphics module
 from PIL import Image # pillow for image processing 
-import tower, player, enemy, bullet, pit, spinningBlade # classes
+import tower, player, enemy, bullet, spinningBlade, button # classes
 import random # modules
 def onAppStart(app):
     #----------------#
@@ -18,8 +18,8 @@ def onAppStart(app):
     app.mapX = 0
     app.mapY = 0
     app.dx = 0 # map moves, not player after floor 0
-    app.dxLeft = 100
-    app.dxRight = -100
+    app.dxLeft = 12
+    app.dxRight = -12
     # keep track of stair coordinates
     app.stairCoordsFloor0 = []
     app.stairCoordsFloor1 = []
@@ -49,15 +49,17 @@ def onAppStart(app):
     app.enemySpawnCount = 0
     #-----------------------#
     # instantiate obstacles
-    app.lava = pit.Pit()
     app.blade = spinningBlade.SpinningBlade(0, 0)
     # lists to keep track of them
-    app.lavaList = []
     app.bladeList = []
+    #----------#
+    # button for start
+    app.button = button.Button(500, 375, 200, 100, 'Start')
 
 def redrawAll(app):
     drawOutsideTowerBG(app)
-    drawStart(app)
+    if app.skyscraper.floor == -1:
+        drawStart(app)
     if 0 <= app.skyscraper.floor <= 3:
         app.skyscraper.drawTower()
         app.character.drawPlayer()
@@ -74,7 +76,8 @@ def redrawAll(app):
         # app.skyscraper.drawLoadingScreen()
 
 def drawStart(app):
-    drawLabel("Tower To Heaven", app.width // 2, app.height // 2 - 200, size = 100)
+    drawLabel("Tower To Heaven", app.width // 2, app.height // 2 - 200, size = 100, fill = rgb(186, 205, 252))
+    app.button.drawButton()
 
 def drawOutsideTowerBG(app):
     # background image sources: https://www.vecteezy.com/vector-art/540991-
@@ -248,6 +251,13 @@ def onKeyPress(app, key):
 
 def onMousePress(app, mouseX, mouseY): # for debugging rn, later for selection
     print(mouseX, mouseY)
+    if (app.button.x <= mouseX <= app.button.x + app.button.width and
+        app.button.y <= mouseY <= app.button.y + app.button.height and
+        app.skyscraper.floor == -1):
+        app.skyscraper.floor = 0
+        app.character.load()
+        app.skyscraper.loadFloor()
+
 
 def main():
     runApp()
