@@ -10,7 +10,7 @@ reach the top of the tower, you'll be in heaven!
 Open up the folder "TP3" and run main.py.
 
 # Any external modules?
-Nope.
+Nope. (Technically cmu_graphics but we're in the realm of 15-112)
 
 # Any shortcuts?
 I do not endorse cheating.
